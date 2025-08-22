@@ -1,3 +1,8 @@
+<!-- Spinner overlay -->
+<div *ngIf="loadingService.isLoading()" class="spinner-overlay">
+  <app-loader></app-loader>
+</div>
+
 <!-- Contenedor flex que abarca toda la altura de la ventana -->
 <div class="app-row h-screen">
   <!-- Sidebar ocupa 260px de ancho gracias al CSS -->

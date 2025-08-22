@@ -1,0 +1,64 @@
+<section class="flex justify-between items-center">
+  <div>
+    <div class="flex items-center gap-2 text-neutral-500 font-medium">
+      <p class="cursor-pointer">Personalización</p>
+      <svg
+        class="h-3"
+        fill="currentColor"
+        viewBox="0 0 330 330"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
+             c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
+             C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
+             C255,161.018,253.42,157.202,250.606,154.389z" />
+      </svg>
+    </div>
+    <p class="text-h-lg">Preguntas frecuentes</p>
+  </div>
+
+  <div class="flex gap-3">
+    <button
+      [matMenuTriggerFor]="menu"
+      class="border bg-neutral-50 border-[#002485] px-5 py-3 rounded-xl text-[#002485] text-b-md flex justify-center items-center">
+      <iconSvg name="menuOptions"></iconSvg>
+    </button>
+
+    <mat-menu #menu="matMenu" class="!rounded-2xl !min-w-[213px]" xPosition="before">
+      <button
+        mat-menu-item
+        (click)="viewPreview()
+        "
+        class="dropdown-option text-body-1-regulars flex items-center justify-start hover:bg-neutral-200 px-4 py-2 w-full transition-all">
+        <span>Vista previa</span>
+      </button>
+      <button
+        mat-menu-item
+        (click)="back()"
+        class="dropdown-option text-body-1-regulars flex items-center justify-start hover:bg-neutral-200 px-4 py-2 w-full transition-all">
+        <span>Cancelar</span>
+      </button>
+    </mat-menu>
+
+    <button
+      (click)="save()"
+      class="bg-[#002485] px-5 py-3 rounded-xl text-neutral-50 text-b-md hover:bg-[#003e85] transition-all">
+      Guardar cambios
+    </button>
+  </div>
+</section>
+
+<section class="mt-8 md:w-full w-[1060px] md:h-[360px] 2xl:h-[680px] bg-neutral-50 font-normal rounded-2xl h-full">
+  <!-- Editor CKEditor -->
+  <div class="p-4 h-full">
+    <div class="bg-white rounded-lg overflow-hidden h-full">
+      <ckeditor
+        *ngIf="isBrowser && showEditor"
+        [(ngModel)]="editorContent"
+        [editor]="Editor"
+        [config]="{ toolbar: ['heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'] }"
+        style="height:100%; width:100%;">
+      </ckeditor>
+    </div>
+  </div>
+</section>

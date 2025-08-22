@@ -25,9 +25,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     return next(modifiedReq);
   }
 
-  // Obtener accessToken
-  const accessToken = authService.getAccessToken();
-  
+  const accessToken = localStorage.getItem('accessToken');
+  console.log('Access Token:', accessToken); // Debugging log
+
   // Determinar tipo de endpoint
   const isAuthEndpoint = req.url.includes('/auth/');
   const isYaloEndpoint = req.url.includes('yalocobro.com');
@@ -45,6 +45,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   // Agregar Authorization header si tenemos token
   if (accessToken) {
     headers = headers.set('Authorization', `Bearer ${accessToken}`);
+    console.log('Authorization header added:', headers.get('Authorization')); // Debugging log
+  } else {
+    console.warn('No access token found in localStorage.');
   }
 
   // TODO: El servidor no está configurado para aceptar yc-key en CORS

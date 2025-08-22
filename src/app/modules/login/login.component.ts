@@ -7,10 +7,15 @@ import { LoginColaborador } from './login.types';
 import { switchMap } from 'rxjs';
 import { UserService } from '../users/users.service';
 import { environment } from '../../../environments/environment';
-import { MsalService } from '@azure/msal-angular';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
 import { SvgIconComponent } from '../../shared/components/iconSvg/iconSvg.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+export function MSALInstanceFactory() {
+  return new PublicClientApplication(environment.msalConfigs);
+}
 
 @Component({
   selector: 'app-login',
@@ -18,7 +23,11 @@ import { CommonModule } from '@angular/common';
   imports: [SvgIconComponent, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  providers: [UserService] // Added UserService to providers
+  providers: [
+    UserService,
+    MsalService,
+    { provide: MSAL_INSTANCE, useFactory: MSALInstanceFactory }
+  ]
 })
 export class LoginComponent {
 
@@ -42,7 +51,7 @@ export class LoginComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     if(this.loginService.isAuthenticated()) {
-      this.router.navigate(['/main/home']);
+      this.router.navigate(['/main/dashboard']); // Redirect to dashboard instead of home
     }
   }
 
@@ -104,7 +113,7 @@ export class LoginComponent {
           sessionStorage.setItem('username', response.nombre);
 
           if (this.code === response.password) {
-            this.router.navigate(['/main/home']);
+            this.router.navigate(['/main/dashboard']); // Redirect to dashboard instead of home
           } else {
             // this.alertService.showError('Código de acceso incorrecto');
           }

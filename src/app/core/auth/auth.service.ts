@@ -44,8 +44,8 @@ export class AuthService {
     return this.http.post<Login>(url, { correo: email, codigo: code || null }).pipe(
       tap((res) => {
         console.log('Login response:', res);
-        this.setAccessToken(res.accessToken);
-        this.setRefreshToken(res.refreshToken);
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
         localStorage.setItem('username', res.nombre);
         localStorage.setItem('rolname', res.rolnombre);
         localStorage.setItem('userId', res.id.toString());
@@ -83,25 +83,14 @@ export class AuthService {
 
   logout(): void {
     if (this.isBrowser()) {
-      // Limpiar todos los datos de autenticación
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('username');
-      localStorage.removeItem('rolname');
-      localStorage.removeItem('userId');
-      // Mantener limpieza de claves anteriores por compatibilidad
-      localStorage.removeItem('userName');
-      localStorage.removeItem('roleName');
-      localStorage.removeItem('usuarioId');
-      localStorage.removeItem('usuario');
-      
-      // También limpiar sessionStorage por si acaso
+      // Clear all authentication data
+      localStorage.clear();
       sessionStorage.clear();
 
-      console.log('[AuthService] Logout → sesión cerrada');
-      
-      // Redirigir al login
-      this.router.navigate(['/']);
+      console.log('[AuthService] Logout → All data cleared, redirecting to login.');
+
+      // Redirect to login
+      this.router.navigate(['/login']);
     }
   }
 

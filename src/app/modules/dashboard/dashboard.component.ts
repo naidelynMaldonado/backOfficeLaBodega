@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +18,10 @@ import { MatChipsModule } from '@angular/material/chips';
     }
   `]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  constructor(private loadingService: LoadingService) {}
 
+  ngOnInit(): void {
+    // this.loadingService.onLoading(); // Activate loading on init
+  }
 }

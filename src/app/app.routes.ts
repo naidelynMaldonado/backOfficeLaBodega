@@ -19,8 +19,20 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./modules/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
+      {
+        path: 'faqs',
+        loadComponent: () => import('./modules/personalization/faqs/faqs.component').then(m => m.FaqsComponent)
+      },
+      {
+        path: 'faqs/edit',
+        loadComponent: () => import('./modules/personalization/faqs/faqs-edit/faqs-edit.component').then(m => m.FaqsEditComponent)
+      },
       
     ]
+  },
+  {
+    path: 'preview-faqs',
+    loadComponent: () => import('./modules/personalization/faqs/preview-faq/preview-faq.component').then(m => m.PreviewFaqComponent)
   },
   {
     path: 'dashboard',

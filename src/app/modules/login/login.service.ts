@@ -49,10 +49,13 @@ export class LoginService {
       )
       .pipe(
         tap((response: LoginColaborador) => {
-          // Actualizamos el BehaviorSubject con la respuesta
-          this.colaboradorSubject.next(response);
-          // Store in localStorage for persistence
+          // Guardar tokens y datos del colaborador en localStorage
+          localStorage.setItem('accessToken', response.accessToken);
+          localStorage.setItem('refreshToken', response.refreshToken);
           localStorage.setItem('colaborador', JSON.stringify(response));
+
+          // Actualizar el sujeto colaborador
+          this.colaboradorSubject.next(response);
         }),
         retry(2) // Intentar nuevamente hasta 2 veces en caso de error
       );

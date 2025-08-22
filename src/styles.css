@@ -1,27 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* Tailwind CSS */
+/* Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Angular Material Styles */
-/* @import '@angular/material/prebuilt-themes/indigo-pink.css'; */
+/* Quill CSS (tema) */
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.snow.css';
 
-/* Material Icons */
-/* @import url('https://fonts.googleapis.com/icon?family=Material+Icons'); */
-
-/* Material Design Fonts */
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap'); */
-
-/* Global Material Design Styles */
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-/* Ensure the app root and main layout fill the viewport so sidebars and content stretch full height */
+/* Layout full height (si usas sidebars) */
 app-root, app-main, app-main > div, app-main > div > lb-sidebar, app-main > div > main {
-	height: 100%;
+  height: 100%;
 }
 
-/* Ensure flex children can shrink/grow properly */
+/* Evita colapsar hijos flex */
 .flex-1 { min-height: 0; }
+
+/* --- Quill visible y bonito --- */
+.quill-wrapper .ql-container {
+  min-height: 280px;                 /* súbelo si quieres más alto */
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+.quill-wrapper .ql-toolbar {
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* CKEditor tweaks */
+/* Ocultar marca de agua/branding si aparece */
+.ck-reset_all .ck.ck-editor__top, .ck.ck-editor__main .ck-reset_all , .ck-editor__editable_inline .ck-context-menu, .ck-logo, .ck-powered-by {
+  display: none !important;
+}
+
+/* Forzar que el editable ocupe toda la altura del contenedor */
+.ck-editor__editable_inline, .ck-editor__editable, .ck-content {
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
+/* Asegurar que los contenedores se expandan */
+.quill-wrapper, .ck-editor, .ck-editor__main, .ck-editor__main > .ck-content {
+  height: 100% !important;
+}
+
+/* Si quieres ajustar min-height globalmente */
+.ck-editor__editable_inline {
+  min-height: 420px; /* valor aumentado */
+}
