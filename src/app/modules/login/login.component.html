@@ -1,21 +1,21 @@
 <div class="w-full h-full flex flex-row">
   <div class="w-1/2">
     <img
-      src="./assets/images/bg-login.png"
+      src="./assets/img/bg-login.png"
       alt="imagen de la bodega"
       class="w-full h-full object-cover"
     />
   </div>
 
   <div class="w-1/2 bg-neutral-100 flex justify-center items-center">
-    <div class="w-[80%] bg-neutral-0 rounded-2xl p-7 border border-neutral-200">
+    <div class="w-[80%] bg-neutral-50 rounded-2xl p-7 border border-neutral-200">
       <div class="flex gap-2 flex-col border-b border-neutral-200 pb-2 mb-6">
         <img
-          src="./assets/images/iconLaBodega.png"
+          src="./assets/brand/iconLaBodega.png"
           alt="Logo LaBodega"
           class="w-[105px] h-[48px] object-contain"
         />
-        <p class="m-0 text-h-md text-primary-800">Backoffice</p>
+        <p class="m-0 text-h-md text-[#063289]">Backoffice</p>
       </div>
 
       <div class="flex flex-col gap-3 mb-8 text-b-sm">
@@ -43,14 +43,14 @@
       </div>
 
       <button
-        class="w-full rounded-2xl h-[56px] bg-primary-800 text-neutral-0 hover:opacity-95 active:scale-[.99] transition"
+        class="w-full rounded-2xl h-[56px] bg-[#063289] text-neutral-50 hover:opacity-95 active:scale-[.99] transition"
         (click)="login()"
       >
         Iniciar sesión
       </button>
 
       <p
-        class="my-2 text-center text-primary-800 font-medium"
+        class="my-2 text-center text-[#063289] font-medium"
         (click)="resendCode()"
         [class.cursor-not-allowed]="timeRemaining > 0"
         [class.cursor-pointer]="timeRemaining === 0"

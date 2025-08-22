@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
-import { AuthService } from '../../core/auth/auth.service';
-import { LoginRequest, LoginResponse } from './login.types';
+import { DetalleColaborador, updatePassword } from '../users/users.types';
+import { LoginColaborador } from './login.types';
+// import { AlertService } from '../../shared/service/alert';
+import { switchMap } from 'rxjs';
+import { UserService } from '../users/users.service';
+import { environment } from '../../../environments/environment';
+import { MsalService } from '@azure/msal-angular';
 import { SvgIconComponent } from '../../shared/components/iconSvg/iconSvg.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SvgIconComponent],
+  imports: [SvgIconComponent, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrl: './login.component.css',
+  providers: [UserService] // Added UserService to providers
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+
   email: string = '';
   code: string = '';
 
@@ -25,7 +32,7 @@ export class LoginComponent implements OnInit {
     private router:Router,
     private loginService: LoginService,
     private userService: UserService,
-    private alertService: AlertService,
+    // private alertService: AlertService,
     private msal: MsalService
   ){
 
@@ -35,7 +42,7 @@ export class LoginComponent implements OnInit {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     if(this.loginService.isAuthenticated()) {
-      this.router.navigate(['/office/home']);
+      this.router.navigate(['/main/home']);
     }
   }
 
@@ -63,16 +70,16 @@ export class LoginComponent implements OnInit {
           password: randomNumber.toString() || '',
       };
     
-      this.alertService.showInfo(
-        `Tu nuevo código de acceso ha sido enviado a tu correo`
-      );
+      // this.alertService.showInfo(
+      //   `Tu nuevo código de acceso ha sido enviado a tu correo`
+      // );
     
       this.userService.newPassword(formData).pipe(
         switchMap(() => this.userService.updatePassword(formData)) 
       ).subscribe({
         next: () => {},
         error: (err: any) => {
-          this.alertService.showError(`Error al mandar el nuevo código de acceso: ${err}`);
+          // this.alertService.showError(`Error al mandar el nuevo código de acceso: ${err}`);
         }
       });
     
@@ -80,7 +87,7 @@ export class LoginComponent implements OnInit {
       this.startCountdown();
     }
     else {
-      this.alertService.showError(`Inresa un correo electronico para poder mandar tu nuevo codigo de acceso`);
+      // this.alertService.showError(`Inresa un correo electronico para poder mandar tu nuevo codigo de acceso`);
     }
   }
   
@@ -97,18 +104,18 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('username', response.nombre);
 
           if (this.code === response.password) {
-            this.router.navigate(['/office/home']);
+            this.router.navigate(['/main/home']);
           } else {
-            this.alertService.showError('Código de acceso incorrecto');
+            // this.alertService.showError('Código de acceso incorrecto');
           }
         },
         error: (err: any) => {
           console.error('Error al buscar colaborador:', err);
-          this.alertService.showError('Error al buscar colaborador: ' + err);
+          // this.alertService.showError('Error al buscar colaborador: ' + err);
         }
       });
     } else {
-      this.alertService.showError('Ingresa un correo electrónico');
+      // this.alertService.showError('Ingresa un correo electrónico');
     }
   }
   loginWithMicrosoft() { 
@@ -131,4 +138,7 @@ export class LoginComponent implements OnInit {
       redirectStartPage: '/auth-callback' 
     });
   }
+  
+  
+  
 }
