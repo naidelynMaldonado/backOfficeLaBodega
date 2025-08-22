@@ -1,0 +1,103 @@
+/* Estilo base del layout */
+.app-layout {
+  display: flex;
+  position: relative;
+  background: #f6f9fc;
+  height: 100vh;
+}
+
+/* Contenedor principal que envuelve todo el contenido */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0.75rem 0.75rem 0.75rem 0; // Escritorio: sin padding a la izquierda
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .main-container {
+    padding: 0.75rem; // Móviles y tabletas: padding en los 4 lados
+  }
+}
+
+/* Contenido con borde y sombra */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--border, 220 13% 91%));
+  box-shadow: 0 0 0 1px hsl(var(--ring, 220 13% 96%) / 0.2);
+}
+
+/* Layout de fila para sidebar y main */
+.app-row {
+  display: flex;
+  height: 100%;
+}
+
+/* Main ocupa el resto del espacio y tiene el fondo deseado */
+.app-row > main {
+  flex: 1 1 auto;
+  min-width: 0; /* permite que el flex item se reduzca sin romper el layout */
+  background: #f6f9fc;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos opcionales para contenido desplazable */
+.content {
+  flex: 1;
+  padding: 1.5rem 0.75rem 1.5rem;
+  overflow-y: auto;
+  position: relative;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  @media (min-width: 1024px) {
+    padding: 2rem 1.25rem 2rem;
+  }
+}
+
+/* Contenedor para las rutas si lo usas en otras vistas */
+.route-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* Fondo animado (si lo utilizas en otra sección) */
+.bg-main-wrapper {
+  background: #f6f9fc;
+  background-size: 200% 100%;
+  animation: wavebg 8s linear infinite;
+}
+
+@keyframes wavebg {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-layout {
+    position: relative;
+  }
+}

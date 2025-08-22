@@ -1,0 +1,57 @@
+<div class="sidebar-container">
+    <div class="sidebar-header">
+        <a routerLink="/dashboard">
+            <img 
+                src="assets/brand/iconLaBodega.png" 
+                class="sidebar-logo" 
+                alt="logo la bodega"
+            >
+        </a>
+    </div>
+
+    <div class="text-white">
+        <ng-container *ngFor="let item of navigation; let i = index;">
+            <ng-container *ngIf="item.children && item.children.length > 0">
+                <mat-expansion-panel 
+                    [expanded]="isExpanded(item.id)"
+                    (opened)="expandedItems.add(item.id)"
+                    (closed)="expandedItems.delete(item.id)"
+                >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="display: flex !important; align-items: center !important; gap: 16px !important;">
+                            <iconSvg [name]="item.icon" customClass="nav-icon w-6 h-6"></iconSvg>
+                            <span class="panel-text">{{ item.title || item.name }}</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+    
+                    <ng-container *ngFor="let child of item.children; let j = index;">
+                        <a 
+                            class="nav-child-item" 
+                            [class.active]="isActiveRoute(child.link)"
+                            [routerLink]="child.link"
+                        >
+                            <span>{{ child.title || child.name }}</span>
+                        </a>
+                    </ng-container>
+                </mat-expansion-panel>
+            </ng-container>
+            
+            <ng-container *ngIf="!item.children || item.children.length === 0">
+                <a 
+                    class="nav-item" 
+                    [class.active]="isActiveRoute(item.link)"
+                    [routerLink]="item.link"
+                >
+                    <iconSvg [name]="item.icon" customClass="nav-icon w-6 h-6"></iconSvg>
+                    <span>{{ item.title || item.name }}</span>
+                </a>
+            </ng-container>
+        </ng-container>
+    </div>
+    
+    <!-- Botón de logout al final -->
+    <button class="logout-button" (click)="logout()" type="button">
+        <iconSvg name="logout" customClass="nav-icon w-4 h-4"></iconSvg>
+        <span>Cerrar Sesión</span>
+    </button>
+</div>

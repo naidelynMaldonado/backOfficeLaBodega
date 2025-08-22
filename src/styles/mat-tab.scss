@@ -1,0 +1,20 @@
+.mat-mdc-tab .mdc-tab-indicator__content--underline{
+  border-top-width: 2px !important;
+  border-color: var(--color-brand-blue-default) !important;
+}
+
+.mat-mdc-tab-label-container{
+  border: none !important;
+  border-bottom:  1px solid  var(--color-neutral-main-border) !important;
+}
+
+.mdc-tab--active{
+  color:  var(--color-brand-blue-default) !important;
+}
+.mat-mdc-tab{
+  padding-bottom: 6px !important;
+
+}
+.mdc-tab__text-label{
+  @apply  text-body-1-regular;
+}

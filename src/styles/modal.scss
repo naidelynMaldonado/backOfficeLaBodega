@@ -1,0 +1,33 @@
+.mat-mdc-dialog-surface {
+  border-radius: 1rem !important;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2) !important;
+  animation: yaloFadeIn 0.3s ease-out forwards;
+  overflow: visible !important;
+}
+
+// Animación de entrada
+@keyframes yaloFadeIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.mat-mdc-dialog-surface.closing {
+  animation: yaloFadeOut 0.3s ease-in forwards;
+}
+
+@keyframes yaloFadeOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}

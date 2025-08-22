@@ -1,0 +1,46 @@
+<div
+  (click)="fileInput.click()"
+  class="cursor-pointer rounded-2xl border border-dashed flex items-center justify-center flex-col"
+  [ngClass]="borderColor"
+  [style.height]="height"
+>
+  <label
+    class="flex flex-col items-center cursor-pointer"
+    *ngIf="!imageUrl"
+  >
+    <mat-icon
+      aria-hidden="false"
+      [svgIcon]="uploadIcon"
+      class="!w-[24px] !z-0 !p-0 !m-0 !mr-2 !h-[24px] cursor-pointer"
+    ></mat-icon>
+    <p class="mt-2 text-sm text-gray-600">{{ placeholder }}</p>
+  </label>
+
+  <div class="relative">
+    <input
+      type="file"
+      name="file"
+      id="file"
+      class="opacity-0 absolute"
+      [accept]="acceptedTypes"
+      #fileInput
+      (change)="onFileSelected($event)"
+    />
+  </div>
+
+  <div class="relative w-full flex justify-center" *ngIf="imageUrl">
+    <img
+      [src]="imageUrl"
+      class="object-cover !-m-2 rounded-xl"
+      [style.height]="height"
+    />
+
+    <button
+      (click)="removeImage($event)"
+      class="absolute inset-0 m-auto bg-red-600 text-white p-2 rounded-xl hover:bg-red-700 transition-all flex items-center justify-center"
+      style="width: 80px; height: 40px"
+    >
+      Eliminar
+    </button>
+  </div>
+</div>

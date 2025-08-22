@@ -1,0 +1,39 @@
+
+.tag-status {
+    @apply text-caption-1-bold flex justify-center;
+  
+    &--pendiente {
+      @apply bg-[#B0B0B0];
+    }
+  
+    &--en-progreso {
+      @apply bg-[#F8D65D];
+    }
+  
+    &--finalizada, &--aprobada, &--pagada {
+      @apply bg-[#01EB7B];
+    }
+  
+    &--cancelada {
+      @apply bg-[#fe4e50] text-white;
+    }
+  }
+  
+  @keyframes alertBlink {
+    0%,
+    100% {
+      transform: scale(1);
+      color: #000000;
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.4);
+      color: #ff0000;
+      opacity: 0.9;
+    }
+  }
+  
+  .blinking-alert {
+    animation: alertBlink 1s ease-in-out infinite;
+  }
+  

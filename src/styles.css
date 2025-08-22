@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Angular Material Styles */
+/* @import '@angular/material/prebuilt-themes/indigo-pink.css'; */
+
+/* Material Icons */
+/* @import url('https://fonts.googleapis.com/icon?family=Material+Icons'); */
+
+/* Material Design Fonts */
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap'); */
+
+/* Global Material Design Styles */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Ensure the app root and main layout fill the viewport so sidebars and content stretch full height */
+app-root, app-main, app-main > div, app-main > div > lb-sidebar, app-main > div > main {
+	height: 100%;
+}
+
+/* Ensure flex children can shrink/grow properly */
+.flex-1 { min-height: 0; }

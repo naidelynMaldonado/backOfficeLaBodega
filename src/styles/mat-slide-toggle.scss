@@ -1,0 +1,55 @@
+.mat-mdc-slide-toggle .mdc-switch__track,
+.mat-mdc-slide-toggle .mdc-switch__track::before,
+.mat-mdc-slide-toggle .mdc-switch__track::after {
+  border: none !important; // Quita bordes duros
+  border-radius: 9999px !important; // Track redondeado
+  background-color: #e3f2fd !important; // Azul muy claro (estado off)
+  box-shadow: none !important;
+}
+
+.mat-mdc-slide-toggle .mdc-switch__handle {
+  border-radius: 50% !important; // Círculo perfecto
+  background-color: #2196f3 !important; // Azul brillante para thumb
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); // Sombra suave (opcional)
+}
+
+.mat-mdc-slide-toggle.mdc-switch--selected .mdc-switch__track {
+  background-color: #64b5f6 !important; // Azul encendido
+}
+
+.mat-mdc-slide-toggle.mdc-switch--selected .mdc-switch__handle {
+  background-color: #1e88e5 !important; // Thumb encendido
+}
+
+
+.mat-mdc-slide-toggle {
+  /* Estado OFF */
+  --mdc-switch-unselected-track-color: #e3f2fd;
+  --mdc-switch-unselected-hover-track-color: #e3f2fd;
+  --mdc-switch-unselected-focus-track-color: #e3f2fd;
+  --mdc-switch-unselected-pressed-track-color: #e3f2fd;
+
+  --mdc-switch-unselected-handle-color: #90caf9;
+  --mdc-switch-unselected-hover-handle-color: #90caf9;
+  --mdc-switch-unselected-focus-handle-color: #90caf9;
+  --mdc-switch-unselected-pressed-handle-color: #90caf9;
+
+  /* Estado ON */
+  --mdc-switch-selected-track-color: #64b5f6;
+  --mdc-switch-selected-hover-track-color: #64b5f6;
+  --mdc-switch-selected-focus-track-color: #64b5f6;
+  --mdc-switch-selected-pressed-track-color: #64b5f6;
+
+  --mdc-switch-selected-handle-color: #1e88e5;
+  --mdc-switch-selected-hover-handle-color: #1e88e5;
+  --mdc-switch-selected-focus-handle-color: #1e88e5;
+  --mdc-switch-selected-pressed-handle-color: #1e88e5;
+
+  /* Sombra OFF (remove "hover darkening") */
+  --mdc-switch-unselected-track-shadow: none;
+  --mdc-switch-selected-track-shadow: none;
+  --mdc-switch-handle-shadow: none;
+
+  /* Desactiva animación (opcional) */
+  transition: none !important;
+}

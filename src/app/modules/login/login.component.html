@@ -1,0 +1,80 @@
+<div class="w-full h-full flex flex-row">
+  <div class="w-1/2">
+    <img
+      src="./assets/images/bg-login.png"
+      alt="imagen de la bodega"
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+  <div class="w-1/2 bg-neutral-100 flex justify-center items-center">
+    <div class="w-[80%] bg-neutral-0 rounded-2xl p-7 border border-neutral-200">
+      <div class="flex gap-2 flex-col border-b border-neutral-200 pb-2 mb-6">
+        <img
+          src="./assets/images/iconLaBodega.png"
+          alt="Logo LaBodega"
+          class="w-[105px] h-[48px] object-contain"
+        />
+        <p class="m-0 text-h-md text-primary-800">Backoffice</p>
+      </div>
+
+      <div class="flex flex-col gap-3 mb-8 text-b-sm">
+        <article class="gap-0.5">
+          <p class="text-neutral-900">Correo electrónico</p>
+          <input
+            name="email"
+            type="text"
+            [(ngModel)]="email"
+            autocomplete="on"
+            class="h-11 md:h-12 w-full rounded-2xl border px-4 py-3 text-neutral-900 outline-none border-neutral-400"
+          />
+        </article>
+
+        <article class="gap-0.5">
+          <p class="text-neutral-9.00">Código de Acceso</p>
+          <input
+            name="code"
+            type="text"
+            [(ngModel)]="code"
+            autocomplete="off"
+            class="h-11 md:h-12 w-full rounded-2xl border px-4 py-3 text-neutral-900 outline-none border-neutral-400"
+          />
+        </article>
+      </div>
+
+      <button
+        class="w-full rounded-2xl h-[56px] bg-primary-800 text-neutral-0 hover:opacity-95 active:scale-[.99] transition"
+        (click)="login()"
+      >
+        Iniciar sesión
+      </button>
+
+      <p
+        class="my-2 text-center text-primary-800 font-medium"
+        (click)="resendCode()"
+        [class.cursor-not-allowed]="timeRemaining > 0"
+        [class.cursor-pointer]="timeRemaining === 0"
+        [ngClass]="{ 'text-gray-500': timeRemaining > 0 }"
+      >
+        Reenviar código de acceso
+        <span *ngIf="timeRemaining > 0">({{ timeRemaining }} segundos)</span>
+      </p>
+
+      <div class="flex items-center gap-3 my-4">
+        <div class="h-px bg-neutral-200 flex-1"></div>
+        <span class="text-neutral-500 text-b-sm">O</span>
+        <div class="h-px bg-neutral-200 flex-1"></div>
+      </div>
+
+      <button
+        type="button"
+        class="w-full h-[56px] rounded-2xl border border-neutral-300 bg-neutral-0 text-neutral-900 flex items-center justify-center gap-3 hover:bg-neutral-50 active:scale-[.99] transition"
+        (click)="loginWithMicrosoft()"
+        aria-label="Iniciar sesión con Microsoft 365"
+      >
+        <iconSvg aria-hidden="false" name="microsoft"></iconSvg>
+        <span class="font-medium">Iniciar con Microsoft 365</span>
+      </button>
+    </div>
+  </div>
+</div>

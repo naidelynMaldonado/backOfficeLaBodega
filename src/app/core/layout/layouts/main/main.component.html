@@ -1,0 +1,13 @@
+<!-- Contenedor flex que abarca toda la altura de la ventana -->
+<div class="app-row h-screen">
+  <!-- Sidebar ocupa 260px de ancho gracias al CSS -->
+  <lb-sidebar></lb-sidebar>
+
+  <!-- Main ocupa el espacio restante, con fondo #f6f9fc y scroll vertical -->
+  <main class="flex-1 overflow-hidden">
+    <app-header></app-header>
+    <div class="h-full overflow-y-auto overflow-x-hidden p-4">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+  </main>
+</div>

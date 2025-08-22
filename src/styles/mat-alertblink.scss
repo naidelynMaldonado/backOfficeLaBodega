@@ -1,0 +1,17 @@
+@keyframes alertBlink {
+  0%, 100% {
+    transform: scale(1);
+    color: #000000;
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    color: #ff0000;
+    opacity: 0.9;
+  }
+}
+
+.blinking-alert {
+  animation: alertBlink 1s ease-in-out infinite;
+}
+
