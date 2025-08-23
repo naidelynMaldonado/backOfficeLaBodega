@@ -12,7 +12,6 @@ export const authGuard: CanMatchFn = (route: Route, segments: UrlSegment[]): Obs
   const platformId = inject(PLATFORM_ID);
   const url = '/' + segments.map((s) => s.path).join('/');
 
-  // 1) Comprobamos si estamos en navegador (no SSR)
   if (!isPlatformBrowser(platformId)) {
     return of(true);
   }
@@ -20,17 +19,15 @@ export const authGuard: CanMatchFn = (route: Route, segments: UrlSegment[]): Obs
   // 2) Obtenemos el accessToken
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
-    console.warn('No access token found. Redirecting to login.');
     auth.logout();
-    return of(router.createUrlTree(['/login']));
+    return of(router.createUrlTree(['']));
   }
 
   // 3) Decodificamos el payload del accessToken
   const payload = auth.decodePayload(accessToken);
   if (!payload?.exp) {
-    console.warn('Access token is malformed or missing exp field. Redirecting to login.');
     auth.logout();
-    return of(router.createUrlTree(['/login']));
+    return of(router.createUrlTree(['']));
   }
 
   // 4) Comparamos fecha de expiración con el tiempo actual
@@ -39,8 +36,6 @@ export const authGuard: CanMatchFn = (route: Route, segments: UrlSegment[]): Obs
     return of(true);
   }
 
-  // 5) Si llegamos aquí, el accessToken ha expirado
-  console.warn('Access token has expired. Redirecting to login.');
   auth.logout();
-  return of(router.createUrlTree(['/login']));
+  return of(router.createUrlTree(['']));
 };

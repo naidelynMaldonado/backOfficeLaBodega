@@ -5,6 +5,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '../../../../shared/components/iconSvg/iconSvg.component';
 import { AuthService } from '../../../auth/auth.service';
+import { LoginService } from '../../../../modules/login/login.service';
 
 import { navigationData } from '../../../navigation';
 import { NavigationItem } from '../../../navigation/navigation.types';
@@ -281,6 +282,7 @@ export class LbSidebarComponent {
   expandedItems: Set<string | number> = new Set();
   private router = inject(Router);
   private authService = inject(AuthService);
+  private loginService = inject(LoginService);
 
   toggleExpanded(itemId: string | number): void {
     if (this.expandedItems.has(itemId)) {
@@ -300,6 +302,20 @@ export class LbSidebarComponent {
   }
 
   logout(): void {
+    // Limpiar almacenamiento y luego forzar navegación a la raíz
     this.authService.logout();
+    // También limpiar el estado en memoria del LoginService (BehaviorSubject)
+    try {
+      this.loginService.logout();
+    } catch (e) {
+      // Si por alguna razón LoginService no está disponible, continuamos igual
+      console.warn('Sidebar.logout: LoginService.logout falló', e);
+    }
+    try {
+  // Navegación SPA a la raíz, reemplazando el historial para evitar volver atrás
+  this.router.navigateByUrl('/', { replaceUrl: true });
+    } catch (e) {
+      console.warn('Sidebar.logout: no se pudo navegar después de logout', e);
+    }
   }
 }

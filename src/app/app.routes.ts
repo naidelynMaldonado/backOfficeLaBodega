@@ -12,8 +12,9 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'main',
-    loadComponent: () => import('./core/layout/layouts/main/main.component').then(m => m.MainComponent),
+  path: 'main',
+  loadComponent: () => import('./core/layout/layouts/main/main.component').then(m => m.MainComponent),
+  canMatch: [() => import('./core/auth/auth.guard').then(m => m.authGuard as any)],
     children: [
       {
         path: 'dashboard',
@@ -113,8 +114,4 @@ export const routes: Routes = [
     path: 'prize-wheel',
     redirectTo: '/main/prize-wheel'
   },
-  {
-    path: '**',
-    redirectTo: '/main/dashboard'
-  }
 ];

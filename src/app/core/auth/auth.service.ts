@@ -43,7 +43,6 @@ export class AuthService {
     const url = `${this.apiUrl}/auth/login`;
     return this.http.post<Login>(url, { correo: email, codigo: code || null }).pipe(
       tap((res) => {
-        console.log('Login response:', res);
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
         localStorage.setItem('username', res.nombre);
@@ -82,16 +81,9 @@ export class AuthService {
   }
 
   logout(): void {
-    if (this.isBrowser()) {
-      // Clear all authentication data
-      localStorage.clear();
-      sessionStorage.clear();
-
-      console.log('[AuthService] Logout → All data cleared, redirecting to login.');
-
-      // Redirect to login
-      this.router.navigate(['/login']);
-    }
+  // Solo limpiar almacenamiento; la navegación la maneja el componente UI
+  localStorage.clear();
+  sessionStorage.clear();
   }
 
   isAuthenticated(): boolean {
@@ -146,7 +138,6 @@ export class AuthService {
     return this.http.post<RefreshResponse>(url, { refreshToken }).pipe(
       tap((response) => {
         this.setAccessToken(response.accessToken);
-        console.log('Token refrescado!', response);
         if (response.refreshToken) {
           this.setRefreshToken(response.refreshToken);
         }

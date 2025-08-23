@@ -125,7 +125,6 @@ export class LoginComponent {
       redirectUri: config.redirectUri,
       redirectStartPage: '/auth-callback'
     };
-    console.log(request);
     this.msal.loginRedirect({
       scopes: request.scopes,
       authority: request.authority,

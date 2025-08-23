@@ -25,14 +25,12 @@ export class AuthCallbackComponent implements OnInit {
 
   ngOnInit(): void {
     if (localStorage.getItem('postLogin') !== 'true') {
-      console.warn('[AuthCallback] postLogin flag missing, redirecting to /login');
       this.router.navigate(['/login']);
       return;
     }
 
     this.msalService.instance.handleRedirectPromise()
       .then((authResult) => {
-        console.log('[AuthCallback] handleRedirectPromise result:', authResult);
 
         const accountFromResult = (authResult as any)?.account ?? null;
         if (accountFromResult) {
@@ -65,7 +63,6 @@ export class AuthCallbackComponent implements OnInit {
     }
 
     const email = account.username;
-    console.log('[AuthCallback] email:', email);
 
     this.loginService.login(email, null).subscribe({
       next: (response: LoginColaborador) => {

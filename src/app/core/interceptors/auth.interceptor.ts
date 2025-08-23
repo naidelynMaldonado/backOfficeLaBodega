@@ -15,9 +15,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  console.log('Interceptor ejecutado para la URL:', req.url);
-
-  // Verificar si debemos omitir la autenticación para esta request
   if (req.headers.has('Skip-Auth-Interceptor')) {
     const modifiedReq = req.clone({
       headers: req.headers.delete('Skip-Auth-Interceptor')
@@ -26,11 +23,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   }
 
   const accessToken = localStorage.getItem('accessToken');
-  console.log('Access Token:', accessToken); // Debugging log
-
-  // Determinar tipo de endpoint
-  const isAuthEndpoint = req.url.includes('/auth/');
-  const isYaloEndpoint = req.url.includes('yalocobro.com');
 
   // Configurar Content-Type si es necesario
   const shouldSetContentType =
@@ -45,16 +37,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   // Agregar Authorization header si tenemos token
   if (accessToken) {
     headers = headers.set('Authorization', `Bearer ${accessToken}`);
-    console.log('Authorization header added:', headers.get('Authorization')); // Debugging log
-  } else {
-    console.warn('No access token found in localStorage.');
-  }
-
-  // TODO: El servidor no está configurado para aceptar yc-key en CORS
-  // Solo agregar API Key para URLs específicas (comentado hasta que se configure CORS)
-  // if (!isAuthEndpoint && environment.apiKey) {
-  //   headers = headers.set('yc-key', environment.apiKey);
-  // }
+  } 
 
   // Clonamos la petición con los headers finales
   const modifiedReq = req.clone({ headers });
@@ -65,20 +48,12 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
       console.error(`Estado HTTP: ${error.status} | Mensaje: ${error.message}`);
 
       if (error.status === 401 && accessToken) {
-        console.warn('Recibido 401. Intentando refreshToken antes de reintentar.');
-
         return authService.refreshToken().pipe(
           switchMap((response) => {
             const newToken = response.accessToken;
 
             // Clonamos de nuevo la petición original con el nuevo token
             let retryHeaders = headers.set('Authorization', `Bearer ${newToken}`);
-
-            // TODO: No agregar yc-key hasta que se configure CORS en el servidor
-            // Solo agregar yc-key si no es un endpoint de auth
-            // if (!isAuthEndpoint && environment.apiKey) {
-            //   retryHeaders = retryHeaders.set('yc-key', environment.apiKey);
-            // }
 
             const retryReq = req.clone({ headers: retryHeaders });
 
@@ -87,7 +62,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
           catchError(refreshError => {
             console.error('Falló la petición de refreshToken:', refreshError);
             authService.logout();
-            router.navigate(['/']);
+            router.navigate(['']);
             return throwError(() => refreshError);
           })
         );
@@ -96,7 +71,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
       // Si es 401 pero no tenemos token, redirigir al 
       if (error.status === 401 && !accessToken) {
         authService.logout();
-        router.navigate(['/']);
+        router.navigate(['']);
       }
 
       return throwError(() => error);
