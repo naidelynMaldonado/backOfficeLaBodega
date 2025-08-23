@@ -44,6 +44,18 @@ export const routes: Routes = [
         path: 'return-policies/edit',
         loadComponent: () => import('./modules/personalization/return-policies/return-policies-edit/return-policies-edit.component').then(m => m.ReturnPoliciesEditComponent)
       },
+      {
+        path: 'coverage-areas',
+        loadComponent: () => import('./modules/coverage-areas/coverage-areas.component').then(m => m.CoverageAreasComponent)
+      },
+      {
+        path: 'coverage-areas/edit',
+        loadComponent: () => import('./modules/coverage-areas/create-zone/create-zone.component').then(m => m.CreateZoneComponent)
+      },
+      {
+        path: 'coverage-areas/new-provider',
+        loadComponent: () => import('./modules/coverage-areas/create-provider/create-provider.component').then(m => m.CreateProviderComponent)
+      },
     ]
   },
   {
@@ -81,6 +93,14 @@ export const routes: Routes = [
   {
     path: 'faqs/edit',
     redirectTo: '/main/faqs/edit'
+  },
+  {
+    path: 'coverage-areas',
+    redirectTo: '/main/coverage-areas'
+  },
+  {
+    path: 'coverage-areas/edit',
+    redirectTo: '/main/coverage-areas/edit'
   },
   {
     path: 'terms-and-conditions',

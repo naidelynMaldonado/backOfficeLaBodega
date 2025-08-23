@@ -1,0 +1,44 @@
+<section class="flex justify-between">
+  <p class="text-lg">Areas de Cobertura</p>
+
+  <div class="flex gap-4">
+    <button
+    (click)="navigateToEdit()"
+      class="bg-[#002485] text-neutral-100 flex gap-2 px-5 py-4 rounded-lg text-neutral-0 text-b-md hover:bg-[#003e85] transition-all"
+    >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+    </svg>
+      Agregar Zona
+    </button>
+    <button
+    (click)="navigateToEdit()"
+      class="bg-[#002485] text-neutral-100 flex gap-2 px-5 py-4 rounded-lg text-neutral-0 text-b-md hover:bg-[#003e85] transition-all"
+    >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+    </svg>
+      Agregar Proveedor
+    </button>
+  </div>
+</section>
+
+<div class="p-6 bg-[#ffffff] my-4">
+ <div class="bg-gray-50 p-4 rounded-lg mb-6">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Proveedores disponibles</h2>
+    <div class="flex flex-wrap gap-3">
+      <button 
+        *ngFor="let provider of providers" 
+        class="bg-white border border-gray-200 text-gray-700 px-5 py-2 rounded-full hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 transition-colors duration-200 shadow-sm flex items-center gap-2"
+        (click)="focusOnProvider(provider)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        {{ provider.nombreproveedor }}
+      </button>
+    </div>
+  </div>
+  <div id="map" class="w-full h-[500px] border border-gray-300 rounded"></div>
+
+</div>
