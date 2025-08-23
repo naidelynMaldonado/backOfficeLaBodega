@@ -27,12 +27,24 @@ export const routes: Routes = [
         path: 'faqs/edit',
         loadComponent: () => import('./modules/personalization/faqs/faqs-edit/faqs-edit.component').then(m => m.FaqsEditComponent)
       },
+      {
+        path: 'terms-and-conditions',
+        loadComponent: () => import('./modules/personalization/terms-and-conditions/terms-and-conditions.component').then(m => m.TermsAndConditionsComponent)
+      },
+      {
+        path: 'terms-and-conditions/edit',
+        loadComponent: () => import('./modules/personalization/terms-and-conditions/terms-and-conditions-edit/terms-and-conditions-edit.component').then(m => m.TermsAndConditionsEditComponent)
+      },
       
     ]
   },
   {
     path: 'preview-faqs',
     loadComponent: () => import('./modules/personalization/faqs/preview-faq/preview-faq.component').then(m => m.PreviewFaqComponent)
+  },
+  {
+    path: 'preview-terms-and-conditions',
+    loadComponent: () => import('./modules/personalization/terms-and-conditions/preview-terms-and-conditions/preview-terms-and-conditions.component').then(m => m.PreviewTermsAndConditionsComponent)
   },
   {
     path: 'dashboard',
@@ -53,6 +65,14 @@ export const routes: Routes = [
   {
     path: 'faqs/edit',
     redirectTo: '/main/faqs/edit'
+  },
+  {
+    path: 'terms-and-conditions',
+    redirectTo: '/main/terms-and-conditions'
+  },
+  {
+    path: 'terms-and-conditions/edit',
+    redirectTo: '/main/terms-and-conditions/edit'
   },
   {
     path: 'users',

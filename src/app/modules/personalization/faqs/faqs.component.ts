@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FaqsService } from './faqs.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
@@ -17,6 +18,7 @@ export class FaqsComponent implements OnInit {
   constructor(
     private faqService: FaqsService,
     private sanitizer: DomSanitizer,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -47,10 +49,10 @@ export class FaqsComponent implements OnInit {
   }
 
   edit() {
-    location.href = '/main/faqs/edit';
+    this.router.navigate(['/main/faqs/edit']);
   }
 
   preview() {
-    location.href = '/preview-faqs';
+    this.router.navigate(['/preview-faqs']);
   }
 }

@@ -95,7 +95,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
           catchError(refreshError => {
             console.error('Falló la petición de refreshToken:', refreshError);
             authService.logout();
-            router.navigate(['/']);
+            router.navigate(['/login']);
             return throwError(() => refreshError);
           })
         );
@@ -103,8 +103,8 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
       // Si es 401 pero no tenemos token, redirigir al login
       if (error.status === 401 && !accessToken) {
-        authService.logout();
-        router.navigate(['/']);
+  authService.logout();
+  router.navigate(['/login']);
       }
 
       return throwError(() => error);

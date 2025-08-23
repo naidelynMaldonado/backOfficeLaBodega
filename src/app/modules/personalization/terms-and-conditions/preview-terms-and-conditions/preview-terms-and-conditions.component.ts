@@ -1,21 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
-import { FaqsService } from "../faqs.service";
-import { updateContent } from "../faqs.types";
-import { FooterComponent } from "../../previews-components/footer/footer.component";
-import { HeaderComponent } from "../../previews-components/header/header.component";
-import { SvgIconComponent } from "../../../../shared/components/iconSvg/iconSvg.component";
+import { Component, OnInit } from '@angular/core';
+import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
+import { FaqsService } from '../../faqs/faqs.service';
+import { updateContent } from '../terms-and-conditions.types';
 import { RouterModule } from '@angular/router';
-// import { AlertService } from "../../../shared/service/alert";
+import { FooterComponent } from '../../previews-components/footer/footer.component';
+import { HeaderComponent } from '../../previews-components/header/header.component';
 
 @Component({
-    selector: 'app-preview-faq',
-    templateUrl: './preview-faq.component.html',
-    standalone: true,
-    imports: [FooterComponent, HeaderComponent, RouterModule]
-  })
-  export class PreviewFaqComponent implements OnInit {
-    content = '';
+  selector: 'app-preview-terms-and-conditions',
+  templateUrl: './preview-terms-and-conditions.component.html',
+  standalone: true,
+  imports: [FooterComponent, HeaderComponent, RouterModule]
+})
+export class PreviewTermsAndConditionsComponent implements OnInit {
+content = '';
     contentPreview: SafeHtml = '';
 
     constructor(
@@ -71,4 +69,4 @@ import { RouterModule } from '@angular/router';
         }
       })
     }
-  }
+}

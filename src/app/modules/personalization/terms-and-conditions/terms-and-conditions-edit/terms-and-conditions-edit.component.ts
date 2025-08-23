@@ -1,30 +1,29 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { Router } from '@angular/router';
-import { FaqsService } from '../faqs.service';
-import { Content, updateContent } from '../faqs.types';
-
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { SvgIconComponent } from '../../../../shared/components/iconSvg/iconSvg.component';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { Content, updateContent } from '../terms-and-conditions.types';
+import { TermsAndConditionsService } from '../terms-and-conditions.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'; // ✅ default import
+import { SvgIconComponent } from '../../../../shared/components/iconSvg/iconSvg.component';
 
 @Component({
-  selector: 'app-faqs-edit',
+  selector: 'app-terms-and-conditions-edit',
+  templateUrl: './terms-and-conditions-edit.component.html',
   standalone: true,
-  templateUrl: './faqs-edit.component.html',
   imports: [
-    ReactiveFormsModule,
-    MatMenuModule,
-    FormsModule,
-    CommonModule,
-    SvgIconComponent,
-    CKEditorModule
-  ],
+      ReactiveFormsModule,
+      MatMenuModule,
+      FormsModule,
+      CommonModule,
+      SvgIconComponent,
+      CKEditorModule
+    ],
 })
-export class FaqsEditComponent implements OnInit {
-  public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar errores de tipado del compilador
+export class TermsAndConditionsEditComponent implements OnInit {
+public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar errores de tipado del compilador
   public editorContent: string = '';          // Contenido inicial
 
   /** Render sólo en navegador (SSR-safe) */
@@ -35,7 +34,7 @@ export class FaqsEditComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private faqsService: FaqsService,
+    private termsandconditions: TermsAndConditionsService,
     @Inject(PLATFORM_ID) private pid: Object
   ) {}
 
@@ -46,7 +45,7 @@ export class FaqsEditComponent implements OnInit {
     queueMicrotask(() => { this.showEditor = true; });
 
     // Cargar contenido desde la API
-    this.faqsService.getContent().subscribe({
+    this.termsandconditions.getContent().subscribe({
       next: (response: Content) => {
         this.editorContent = response?.contenido ?? '';
       },
@@ -63,7 +62,7 @@ export class FaqsEditComponent implements OnInit {
       usuario: sessionStorage.getItem('usuario') || localStorage.getItem('usuario') || '',
     };
 
-    this.faqsService.putContent(formData).subscribe({
+    this.termsandconditions.putContent(formData).subscribe({
       next: () => {
         // opcional: feedback de éxito
       },
@@ -74,10 +73,10 @@ export class FaqsEditComponent implements OnInit {
   }
 
   back(): void {
-  this.router.navigate(['/main/faqs']);
+  this.router.navigate(['/main/terms-and-conditions']);
   }
 
   viewPreview(): void {
-  this.router.navigate(['/preview-faqs']);
+  this.router.navigate(['/preview-terms-and-conditions']);
   }
 }

@@ -16,7 +16,7 @@ import { environment } from '../../../environments/environment';
 const accessToken = sessionStorage.getItem('accessToken');
 const rouletteToken = sessionStorage.getItem('rouletteToken');
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserService {
   constructor(private http: HttpClient) {}
 
