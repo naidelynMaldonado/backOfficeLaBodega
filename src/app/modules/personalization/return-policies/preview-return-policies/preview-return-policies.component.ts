@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
-import { updateContent } from '../terms-and-conditions.types';
+import { ReturnPoliciesService } from '../return-policies.service';
+import { updateContent } from '../return-policies.types';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../previews-components/footer/footer.component';
 import { HeaderComponent } from '../../previews-components/header/header.component';
-import { TermsAndConditionsService } from '../terms-and-conditions.service';
 
 @Component({
-  selector: 'app-preview-terms-and-conditions',
-  templateUrl: './preview-terms-and-conditions.component.html',
+  selector: 'app-preview-return-policies',
+  templateUrl: './preview-return-policies.component.html',
   standalone: true,
   imports: [FooterComponent, HeaderComponent, RouterModule]
 })
-export class PreviewTermsAndConditionsComponent implements OnInit {
+export class PreviewReturnPoliciesComponent implements OnInit {
 content = '';
     contentPreview: SafeHtml = '';
 
     constructor(
-      private termsAndConditionsService: TermsAndConditionsService,
+      private returnService: ReturnPoliciesService,
       private sanitizer: DomSanitizer,
       // private alertService: AlertService,
     ) {
@@ -25,7 +25,7 @@ content = '';
     }
   
     ngOnInit(): void {
-        this.termsAndConditionsService.getContent().subscribe({
+        this.returnService.getContent().subscribe({
           next: (value) => {
             let rawHtml = value.contenido;
             this.content = value.contenido;
@@ -60,7 +60,7 @@ content = '';
         usuario: sessionStorage.getItem("usuario") || '',
       }
   
-      this.termsAndConditionsService.publishContent(formData).subscribe({
+      this.returnService.publishContent(formData).subscribe({
         next: () => {
           // this.alertService.showSuccess("Contenido publicado con exito.")
         },

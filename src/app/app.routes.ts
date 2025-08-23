@@ -35,7 +35,14 @@ export const routes: Routes = [
         path: 'terms-and-conditions/edit',
         loadComponent: () => import('./modules/personalization/terms-and-conditions/terms-and-conditions-edit/terms-and-conditions-edit.component').then(m => m.TermsAndConditionsEditComponent)
       },
-      
+      {
+        path: 'return-policies',
+        loadComponent: () => import('./modules/personalization/return-policies/return-policies.component').then(m => m.ReturnPoliciesComponent)
+      },
+      {
+        path: 'return-policies/edit',
+        loadComponent: () => import('./modules/personalization/return-policies/return-policies-edit/return-policies-edit.component').then(m => m.ReturnPoliciesEditComponent)
+      },
     ]
   },
   {
@@ -45,6 +52,10 @@ export const routes: Routes = [
   {
     path: 'preview-terms-and-conditions',
     loadComponent: () => import('./modules/personalization/terms-and-conditions/preview-terms-and-conditions/preview-terms-and-conditions.component').then(m => m.PreviewTermsAndConditionsComponent)
+  },
+  {
+    path: 'preview-return-policies',
+    loadComponent: () => import('./modules/personalization/return-policies/preview-return-policies/preview-return-policies.component').then(m => m.PreviewReturnPoliciesComponent)
   },
   {
     path: 'dashboard',
@@ -73,6 +84,14 @@ export const routes: Routes = [
   {
     path: 'terms-and-conditions/edit',
     redirectTo: '/main/terms-and-conditions/edit'
+  },
+  {
+    path: 'return-policies',
+    redirectTo: '/main/return-policies'
+  },
+  {
+    path: 'return-policies/edit',
+    redirectTo: '/main/return-policies/edit'
   },
   {
     path: 'users',

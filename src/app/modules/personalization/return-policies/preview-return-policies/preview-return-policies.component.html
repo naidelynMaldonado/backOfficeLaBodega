@@ -1,0 +1,38 @@
+<main class="w-full h-full bg-neutral-0 overflow-hidden relative">
+  <app-header />
+
+  <div
+    class="w-full h-[80px] bg-red-800 flex items-center justify-center text-neutral-100"
+  >
+    <div
+      class="max-w-[75rem] w-full px-4 flex flex-row justify-between items-center"
+    >
+      <button
+        class="text-b-sm flex gap-2 items-center active:underline-offset-1 active:underline px-3 py-2 rounded-2xl"
+        routerLink="/main/faqs/edit"
+      >
+        Volver al editor
+      </button>
+      <span class="text-h-xs">Vista previa</span>
+      <button
+        class="h-[48px] px-4 bg-primary-800 active:bg-primary-600 rounded-2xl text-b-sm"
+        (click)="publish()"
+      >
+        Publicar
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="w-full h-[calc(100%-160px)] justify-center overflow-y-auto overflow-x-hidden"
+  >
+    <div class="w-full max-w-[75rem] mx-auto h-auto px-4 pb-10">
+      <section
+      class="my-12"
+        [innerHTML]="contentPreview ? contentPreview : 'No hay contenido que mostrar'"
+      ></section>
+    </div>
+
+    <app-footer />
+  </div>
+</main>
