@@ -332,5 +332,93 @@ module.exports = plugin(({ addComponents }) => {
       backgroundColor: "transparent",
       "@apply ring-0": {},
     },
+    ".checkbox": {
+      // Variables (puedes overridearlas por componente)
+      "--cb-size": "30px",
+      "--cb-input-focus": "var(--color-brand-blue-default)",
+      "--cb-input-out-of-focus": "var(--color-neutral-main-border)",
+      "--cb-bg-color": "var(--color-neutral-white)",
+      "--cb-main-color": "var(--color-brand-black)",
+
+      position: "relative",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      cursor: "pointer",
+      userSelect: "none",
+
+      // Input visualmente oculto pero accesible
+      ".checkbox-input": {
+        position: "absolute",
+        inset: "0",
+        width: "100%",
+        height: "100%",
+        opacity: "0",
+        margin: "0",
+        cursor: "pointer",
+      },
+
+      // Caja visible
+      ".checkbox-mark": {
+        width: "var(--cb-size)",
+        height: "var(--cb-size)",
+        position: "relative",
+        flex: "0 0 auto",
+        border: "2px solid var(--cb-main-color)",
+        borderRadius: "5px",
+        boxShadow: "4px 4px var(--cb-main-color)",
+        backgroundColor: "var(--cb-input-out-of-focus)",
+        transition: "all 0.3s ease",
+      },
+
+      // Tick
+      ".checkbox-mark::after": {
+        content: '""',
+        width: "7px",
+        height: "15px",
+        position: "absolute",
+        top: "2px",
+        left: "8px",
+        display: "none",
+        borderStyle: "solid",
+        borderColor: "var(--cb-bg-color)",
+        borderWidth: "0 2.5px 2.5px 0",
+        transform: "rotate(45deg)",
+      },
+
+      // Estados
+      ".checkbox-input:checked ~ .checkbox-mark": {
+        backgroundColor: "var(--cb-input-focus)",
+      },
+      ".checkbox-input:checked ~ .checkbox-mark::after": {
+        display: "block",
+      },
+      ".checkbox-input:focus-visible ~ .checkbox-mark": {
+        boxShadow:
+          "0 0 0 2px var(--color-brand-blue-default-40), 4px 4px var(--cb-main-color)",
+        outline: "none",
+      },
+      ".checkbox-input:disabled ~ .checkbox-mark": {
+        opacity: "0.5",
+        cursor: "not-allowed",
+      },
+      ".checkbox-input:disabled ~ .checkbox-label": {
+        opacity: "0.6",
+        cursor: "not-allowed",
+      },
+
+      // Tamaños (ajustan caja y tick)
+      "&.checkbox-sm": {
+        "--cb-size": "20px",
+      },
+      "&.checkbox-lg": {
+        "--cb-size": "36px",
+      },
+
+      // Variante redondeada extra
+      "&.checkbox-rounded .checkbox-mark": {
+        borderRadius: "8px",
+      },
+    },
   });
 });

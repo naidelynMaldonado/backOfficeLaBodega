@@ -1,0 +1,63 @@
+<drawer [(open)]="open" (openChange)="openChange.emit($event)" [title]="title" placement="right">
+  <div drawer-header>
+    <h2 class="text-lg font-semibold">{{ title }}</h2>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <!-- Form fields for editing role -->
+    <div class="space-y-4">
+      <label class="block text-sm">
+        <span class="text-gray-700">Nombre</span>
+        <input formControlName="nombre" type="text" class="mt-1 block w-full border rounded p-2" />
+      </label>
+
+      <div class="mt-4">
+        <h3 class="text-base font-medium mb-2">Permisos</h3>
+        <div *ngIf="isLoadingPermissions" class="text-center py-4">Cargando permisos...</div>
+
+        <div *ngIf="!isLoadingPermissions">
+          <div *ngFor="let module of permissionModules" class="p-2">
+            <!-- Módulo principal -->
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox-input" [formControlName]="'module_' + module.id" (change)="onMainModuleChange(module, $event)" />
+              <span class="checkbox-mark"></span>
+              <div class="font-medium">{{ module.nombre }}</div>
+            </label>
+
+            <!-- Submódulos -->
+            <div *ngFor="let sub of module.submodule" class="ml-4 mt-2">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox-input" [formControlName]="'submodule_' + sub.id" (change)="onSubModuleChange(module, sub, $event)" />
+                <span class="checkbox-mark"></span>
+                <div class="text-sm">{{ sub.nombre }}</div>
+              </label>
+
+              <!-- Acciones de submódulo -->
+              <div *ngFor="let act of sub.actions" class="ml-4 mt-1">
+                <label class="checkbox">
+                  <input type="checkbox" class="checkbox-input" [formControlName]="'action_' + act.id" (change)="onActionChange(module, sub, act, $event)" />
+                  <span class="checkbox-mark"></span>
+                  <div class="text-xs">{{ act.nombre }}</div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Acciones del módulo principal -->
+            <div *ngFor="let act of module.actions" class="ml-4 mt-2">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox-input" [formControlName]="'action_' + act.id" (change)="onActionChange(module, null, act, $event)" />
+                <span class="checkbox-mark"></span>
+                <div class="text-xs">{{ act.nombre }}</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div drawer-footer>
+    <button class="px-4 py-2 bg-gray-200 rounded mr-2" type="button" (click)="closeDrawer()">Cancelar</button>
+    <button class="px-4 py-2 bg-indigo-600 text-white rounded" type="button" (click)="save()">Guardar</button>
+  </div>
+</drawer>

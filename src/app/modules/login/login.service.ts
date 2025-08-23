@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, retry, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Permisos } from '../users/users.types';
+import { Permisos } from '../credentials-and-permissions/users/users.types';
 
 @Injectable({
   providedIn: 'root'

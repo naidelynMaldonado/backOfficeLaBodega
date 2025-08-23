@@ -11,7 +11,7 @@ import {
 import { BehaviorSubject, Observable, retry, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 const accessToken = sessionStorage.getItem('accessToken');
 const rouletteToken = sessionStorage.getItem('rouletteToken');

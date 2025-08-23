@@ -49,6 +49,10 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/coverage-areas/coverage-areas.component').then(m => m.CoverageAreasComponent)
       },
       {
+        path: 'roles',
+        loadComponent: () => import('./modules/credentials-and-permissions/roles/roles.component').then(m => m.RolesComponent)
+      },
+      {
         path: 'coverage-areas/edit',
         loadComponent: () => import('./modules/coverage-areas/create-zone/create-zone.component').then(m => m.CreateZoneComponent)
       },

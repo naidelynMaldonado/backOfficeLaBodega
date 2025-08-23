@@ -44,3 +44,93 @@ app-root, app-main, app-main > div, app-main > div > lb-sidebar, app-main > div 
 .ck-editor__editable_inline {
   min-height: 420px; /* valor aumentado */
 }
+
+/* Global checkbox styles to match project "container/checkmark" example */
+.checkbox {
+  --input-focus: #2d8cf0;
+  --input-out-of-focus: #ccc;
+  --bg-color: #fff;
+  --main-color: #323232;
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.checkbox .checkbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.checkbox .checkbox-mark {
+  /* 30px reduced by 40% -> 18px */
+  width: 18px;
+  height: 18px;
+  position: relative;
+  border: 1.5px solid var(--main-color);
+  border-radius: 4px;
+  box-shadow: 2px 2px var(--main-color);
+  background-color: var(--input-out-of-focus);
+  transition: all 0.3s;
+}
+.checkbox .checkbox-mark::after {
+  content: "";
+  /* scaled from 7x15 -> ~4x9 */
+  width: 4px;
+  height: 9px;
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  display: none;
+  border: solid var(--bg-color);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.checkbox .checkbox-input:checked ~ .checkbox-mark {
+  background-color: var(--input-focus);
+}
+.checkbox .checkbox-input:checked ~ .checkbox-mark::after {
+  display: block;
+}
+
+/* Ensure Angular Material mat-menu panels use white background to match app design */
+.cdk-overlay-container .mat-menu-panel,
+.cdk-overlay-container .mat-mdc-menu-panel,
+.cdk-overlay-container .mat-menu-content {
+  background-color: #ffffff !important;
+  color: #111827 !important; /* dark text */
+  box-shadow: 0 6px 18px rgba(16,24,40,0.12) !important;
+}
+
+/* Menu items: transparent background, clear hover state */
+.cdk-overlay-container .mat-menu-panel .mat-menu-item,
+.cdk-overlay-container .mat-mdc-menu-panel .mat-mdc-menu-item,
+.cdk-overlay-container .mat-menu-content .mat-menu-item {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+.cdk-overlay-container .mat-menu-panel .mat-menu-item.mat-focus-indicator:hover,
+.cdk-overlay-container .mat-mdc-menu-panel .mat-mdc-menu-item.mat-focus-indicator:hover,
+.cdk-overlay-container .mat-menu-content .mat-menu-item.mat-focus-indicator:hover {
+  background-color: rgba(0,0,0,0.04) !important;
+}
+
+/* Stronger selector: target the overlay pane that contains the menu to override theme transparency */
+.cdk-overlay-container .cdk-overlay-pane .mat-menu-panel,
+.cdk-overlay-container .cdk-overlay-pane .mat-mdc-menu-panel,
+.cdk-overlay-container .cdk-overlay-pane .mat-menu-content,
+.cdk-overlay-container .cdk-overlay-pane .mat-mdc-menu-content {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+}
+
+/* Some themes apply background on inner elements; force inheritance */
+.cdk-overlay-container .cdk-overlay-pane .mat-menu-panel *,
+.cdk-overlay-container .cdk-overlay-pane .mat-mdc-menu-panel *,
+.cdk-overlay-container .cdk-overlay-pane .mat-menu-content * {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+

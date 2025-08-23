@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
-import { DetalleColaborador, updatePassword } from '../users/users.types';
+import { DetalleColaborador, updatePassword } from '../credentials-and-permissions/users/users.types';
 import { LoginColaborador } from './login.types';
 // import { AlertService } from '../../shared/service/alert';
 import { switchMap } from 'rxjs';
-import { UserService } from '../users/users.service';
+import { UserService } from '../credentials-and-permissions/users/users.service';
 import { environment } from '../../../environments/environment';
 import { MsalService } from '@azure/msal-angular';
 import { CommonModule } from '@angular/common';
