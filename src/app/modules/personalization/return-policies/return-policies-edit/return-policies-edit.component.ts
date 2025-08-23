@@ -3,6 +3,8 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ReturnPoliciesService } from '../return-policies.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 import { Content, updateContent } from '../return-policies.types';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
@@ -35,6 +37,7 @@ public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar e
   constructor(
     private router: Router,
     private returnService: ReturnPoliciesService,
+    private loadingService: LoadingService,
     @Inject(PLATFORM_ID) private pid: Object
   ) {}
 
@@ -44,8 +47,9 @@ public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar e
     // Monta el editor un microtask después (evita mismatch SSR/Hydration)
     queueMicrotask(() => { this.showEditor = true; });
 
-    // Cargar contenido desde la API
-    this.returnService.getContent().subscribe({
+  // Cargar contenido desde la API
+  this.loadingService.onLoading();
+  this.returnService.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
       next: (response: Content) => {
         this.editorContent = response?.contenido ?? '';
       },
@@ -62,7 +66,8 @@ public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar e
       usuario: sessionStorage.getItem('usuario') || localStorage.getItem('usuario') || '',
     };
 
-    this.returnService.putContent(formData).subscribe({
+    this.loadingService.onLoading();
+    this.returnService.putContent(formData).pipe(finalize(() => this.loadingService.offLoading())).subscribe({
       next: () => {
         // opcional: feedback de éxito
       },

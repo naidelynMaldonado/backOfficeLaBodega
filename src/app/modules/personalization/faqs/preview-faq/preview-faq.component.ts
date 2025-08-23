@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FaqsService } from "../faqs.service";
+import { LoadingService } from '../../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 import { updateContent } from "../faqs.types";
 import { FooterComponent } from "../../previews-components/footer/footer.component";
 import { HeaderComponent } from "../../previews-components/header/header.component";
@@ -21,13 +23,15 @@ import { RouterModule } from '@angular/router';
     constructor(
       private faqService: FaqsService,
       private sanitizer: DomSanitizer,
+      private loadingService: LoadingService,
       // private alertService: AlertService,
     ) {
   
     }
   
     ngOnInit(): void {
-        this.faqService.getContent().subscribe({
+        this.loadingService.onLoading();
+        this.faqService.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
           next: (value) => {
             let rawHtml = value.contenido;
             this.content = value.contenido;
@@ -62,7 +66,8 @@ import { RouterModule } from '@angular/router';
         usuario: sessionStorage.getItem("usuario") || '',
       }
   
-      this.faqService.publishContent(formData).subscribe({
+  this.loadingService.onLoading();
+  this.faqService.publishContent(formData).pipe(finalize(() => this.loadingService.offLoading())).subscribe({
         next: () => {
           // this.alertService.showSuccess("Contenido publicado con exito.")
         },

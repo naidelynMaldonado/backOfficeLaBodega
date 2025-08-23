@@ -11,6 +11,8 @@ import { MsalService } from '@azure/msal-angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgIconComponent } from '../../shared/components/iconSvg/iconSvg.component';
+import { LoadingService } from '../../core/services/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +32,7 @@ export class LoginComponent {
     private router:Router,
     private loginService: LoginService,
     private userService: UserService,
+  private loadingService: LoadingService,
     // private alertService: AlertService,
     private msal: MsalService
   ){
@@ -72,8 +75,10 @@ export class LoginComponent {
       //   `Tu nuevo código de acceso ha sido enviado a tu correo`
       // );
     
+      this.loadingService.onLoading();
       this.userService.newPassword(formData).pipe(
-        switchMap(() => this.userService.updatePassword(formData)) 
+        switchMap(() => this.userService.updatePassword(formData)),
+        finalize(() => this.loadingService.offLoading())
       ).subscribe({
         next: () => {},
         error: (err: any) => {
@@ -91,7 +96,8 @@ export class LoginComponent {
   
   login() {
     if (this.email) {
-      this.loginService.login(this.email, this.code).subscribe({
+  this.loadingService.onLoading();
+  this.loginService.login(this.email, this.code).pipe(finalize(() => this.loadingService.offLoading())).subscribe({
         next: (response: LoginColaborador) => {
   
           // Guardar tokens en sessionStorage o localStorage

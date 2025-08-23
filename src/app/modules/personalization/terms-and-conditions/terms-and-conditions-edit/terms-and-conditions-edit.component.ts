@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Content, updateContent } from '../terms-and-conditions.types';
 import { TermsAndConditionsService } from '../terms-and-conditions.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -35,6 +37,7 @@ public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar e
   constructor(
     private router: Router,
     private termsandconditions: TermsAndConditionsService,
+    private loadingService: LoadingService,
     @Inject(PLATFORM_ID) private pid: Object
   ) {}
 
@@ -45,7 +48,8 @@ public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar e
     queueMicrotask(() => { this.showEditor = true; });
 
     // Cargar contenido desde la API
-    this.termsandconditions.getContent().subscribe({
+    this.loadingService.onLoading();
+    this.termsandconditions.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
       next: (response: Content) => {
         this.editorContent = response?.contenido ?? '';
       },
@@ -62,7 +66,8 @@ public Editor: any = ClassicEditor;              // ✅ usar `any` para evitar e
       usuario: sessionStorage.getItem('usuario') || localStorage.getItem('usuario') || '',
     };
 
-    this.termsandconditions.putContent(formData).subscribe({
+    this.loadingService.onLoading();
+    this.termsandconditions.putContent(formData).pipe(finalize(() => this.loadingService.offLoading())).subscribe({
       next: () => {
         // opcional: feedback de éxito
       },

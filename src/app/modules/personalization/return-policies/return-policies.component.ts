@@ -3,6 +3,8 @@ import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { ReturnPoliciesService } from './return-policies.service';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '../../../shared/components/iconSvg/iconSvg.component';
+import { LoadingService } from '../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-return-policies',
@@ -16,12 +18,14 @@ content: SafeHtml = '';
   constructor(
     private returnService: ReturnPoliciesService,
     private sanitizer: DomSanitizer,
+    private loadingService: LoadingService,
   ) {
 
   }
 
   ngOnInit(): void {
-      this.returnService.getContent().subscribe({
+    this.loadingService.onLoading();
+    this.returnService.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
         next: (value) => {
           let rawHtml = value.contenido;
 

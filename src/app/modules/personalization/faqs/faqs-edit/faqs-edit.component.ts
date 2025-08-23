@@ -9,6 +9,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'; // ✅ default import
+import { LoadingService } from '../../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-faqs-edit',
@@ -36,6 +38,7 @@ export class FaqsEditComponent implements OnInit {
   constructor(
     private router: Router,
     private faqsService: FaqsService,
+  private loadingService: LoadingService,
     @Inject(PLATFORM_ID) private pid: Object
   ) {}
 
@@ -46,7 +49,8 @@ export class FaqsEditComponent implements OnInit {
     queueMicrotask(() => { this.showEditor = true; });
 
     // Cargar contenido desde la API
-    this.faqsService.getContent().subscribe({
+    this.loadingService.onLoading();
+    this.faqsService.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
       next: (response: Content) => {
         this.editorContent = response?.contenido ?? '';
       },
@@ -63,7 +67,8 @@ export class FaqsEditComponent implements OnInit {
       usuario: sessionStorage.getItem('usuario') || localStorage.getItem('usuario') || '',
     };
 
-    this.faqsService.putContent(formData).subscribe({
+    this.loadingService.onLoading();
+    this.faqsService.putContent(formData).pipe(finalize(() => this.loadingService.offLoading())).subscribe({
       next: () => {
         // opcional: feedback de éxito
       },

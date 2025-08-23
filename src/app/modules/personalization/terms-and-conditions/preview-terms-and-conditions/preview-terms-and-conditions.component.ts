@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../previews-components/footer/footer.component';
 import { HeaderComponent } from '../../previews-components/header/header.component';
 import { TermsAndConditionsService } from '../terms-and-conditions.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-preview-terms-and-conditions',
@@ -19,13 +21,15 @@ content = '';
     constructor(
       private termsAndConditionsService: TermsAndConditionsService,
       private sanitizer: DomSanitizer,
+      private loadingService: LoadingService,
       // private alertService: AlertService,
     ) {
   
     }
   
     ngOnInit(): void {
-        this.termsAndConditionsService.getContent().subscribe({
+        this.loadingService.onLoading();
+        this.termsAndConditionsService.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
           next: (value) => {
             let rawHtml = value.contenido;
             this.content = value.contenido;
@@ -60,7 +64,8 @@ content = '';
         usuario: sessionStorage.getItem("usuario") || '',
       }
   
-      this.termsAndConditionsService.publishContent(formData).subscribe({
+  this.loadingService.onLoading();
+  this.termsAndConditionsService.publishContent(formData).pipe(finalize(() => this.loadingService.offLoading())).subscribe({
         next: () => {
           // this.alertService.showSuccess("Contenido publicado con exito.")
         },

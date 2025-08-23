@@ -4,6 +4,8 @@ import { FaqsService } from './faqs.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '../../../shared/components/iconSvg/iconSvg.component';
+import { LoadingService } from '../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-faqs',
@@ -18,11 +20,13 @@ export class FaqsComponent implements OnInit {
   constructor(
     private faqService: FaqsService,
     private sanitizer: DomSanitizer,
-    private router: Router
+  private router: Router,
+  private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
-    this.faqService.getContent().subscribe({
+  this.loadingService.onLoading();
+  this.faqService.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
       next: (value) => {
         let rawHtml = value.contenido;
 

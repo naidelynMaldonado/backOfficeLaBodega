@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { SvgIconComponent } from '../../../shared/components/iconSvg/iconSvg.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TermsAndConditionsService } from './terms-and-conditions.service';
+import { LoadingService } from '../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-terms-and-conditions',
@@ -18,11 +20,13 @@ export class TermsAndConditionsComponent implements OnInit {
   constructor( 
       private termsandconditions: TermsAndConditionsService,
       private sanitizer: DomSanitizer,
-      private router: Router
+      private router: Router,
+      private loadingService: LoadingService
     ) { }
   
     ngOnInit(): void {
-      this.termsandconditions.getContent().subscribe({
+    this.loadingService.onLoading();
+    this.termsandconditions.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
         next: (value) => {
           let rawHtml = value.contenido;
   

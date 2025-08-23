@@ -1,32 +1,36 @@
 <!-- Fondo con imagen + overlay -->
-<div class="relative w-full min-h-screen overflow-hidden bg-neutral-50">
-  <img
-    src="./assets/img/bg-login.png"
-    alt="Fondo de la bodega"
-    class="absolute inset-0 w-full h-full object-cover opacity-40 sm:opacity-100"
-  />
-  <div class="absolute inset-0 bg-gradient-to-b from-neutral-900/20 to-transparent"></div>
+<div class="relative isolate w-full min-h-dvh overflow-hidden bg-neutral-50">
+  <!-- Fondo al fondo (z-index negativo) -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10">
+    <img
+      src="./assets/img/bg-login.png"
+      alt=""
+      class="h-full w-full object-cover opacity-40 sm:opacity-100 pointer-events-none select-none"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-neutral-900/30 to-transparent"></div>
+  </div>
 
   <!-- Contenedor centrado -->
-  <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+  <main class="relative z-20 grid place-items-center min-h-dvh p-4">
     <section
       role="dialog"
       aria-modal="true"
       aria-labelledby="authLoadingTitle"
       aria-describedby="authLoadingDesc"
-      class="w-full max-w-[640px] rounded-2xl bg-white/90 backdrop-blur-md border border-neutral-200 shadow-lg p-6 sm:p-8 mx-4"
+      class="w-full max-w-[640px] rounded-2xl bg-white/90 backdrop-blur-md border border-neutral-200 shadow-lg p-6 sm:p-8"
+      aria-busy="true"
     >
-      <!-- Encabezado con logo y título -->
-      <div class="flex items-center gap-3 border-b border-neutral-100 pb-4 mb-6">
+      <!-- Logo centrado -->
+      <div class="flex flex-col items-center justify-center gap-2 mb-6">
         <img
           src="./assets/brand/iconLaBodega.png"
           alt="Logo LaBodega"
-          class="w-[90px] h-[40px] object-contain sm:w-[105px] sm:h-[48px]"
+          class="w-[105px] h-[48px] object-contain"
         />
-        <p class="m-0 text-md text-primary-800 font-semibold">Backoffice</p>
+        <p class="m-0 text-sm text-primary-800 font-semibold">Backoffice</p>
       </div>
 
-      <!-- Cuerpo: spinner + textos -->
+      <!-- Loader + textos centrados -->
       <div class="flex flex-col items-center text-center gap-4 px-2">
         <div class="w-28 h-28 flex items-center justify-center">
           <app-loader></app-loader>
@@ -46,7 +50,7 @@
       </div>
 
       <!-- Indicador sutil de progreso -->
-      <div class="mt-6">
+      <div class="mt-6" aria-hidden="true">
         <div class="h-2 w-full bg-neutral-100 rounded-full overflow-hidden">
           <div class="h-full w-2/3 bg-primary-800 animate-pulse rounded-full"></div>
         </div>
@@ -54,7 +58,7 @@
 
       <!-- Acción de escape (solo UI) -->
       <div class="mt-6 text-center">
-        <p class="text-b-xs text-neutral-500">
+        <p class="text-xs text-neutral-500">
           Si no ocurre nada en unos segundos,
           <a routerLink="/login" class="text-primary-800 underline underline-offset-4 hover:no-underline">
             regresa al inicio
@@ -62,5 +66,5 @@
         </p>
       </div>
     </section>
-  </div>
+  </main>
 </div>

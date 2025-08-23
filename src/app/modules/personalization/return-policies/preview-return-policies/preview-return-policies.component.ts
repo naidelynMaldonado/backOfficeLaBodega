@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { ReturnPoliciesService } from '../return-policies.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { finalize } from 'rxjs';
 import { updateContent } from '../return-policies.types';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../previews-components/footer/footer.component';
@@ -19,13 +21,15 @@ content = '';
     constructor(
       private returnService: ReturnPoliciesService,
       private sanitizer: DomSanitizer,
+      private loadingService: LoadingService,
       // private alertService: AlertService,
     ) {
   
     }
   
     ngOnInit(): void {
-        this.returnService.getContent().subscribe({
+        this.loadingService.onLoading();
+        this.returnService.getContent().pipe(finalize(() => this.loadingService.offLoading())).subscribe({
           next: (value) => {
             let rawHtml = value.contenido;
             this.content = value.contenido;
@@ -60,7 +64,8 @@ content = '';
         usuario: sessionStorage.getItem("usuario") || '',
       }
   
-      this.returnService.publishContent(formData).subscribe({
+  this.loadingService.onLoading();
+  this.returnService.publishContent(formData).pipe(finalize(() => this.loadingService.offLoading())).subscribe({
         next: () => {
           // this.alertService.showSuccess("Contenido publicado con exito.")
         },
