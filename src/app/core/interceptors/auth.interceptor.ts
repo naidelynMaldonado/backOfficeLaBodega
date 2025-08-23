@@ -1,5 +1,5 @@
 // auth.interceptor.ts
-import { inject } from '@angular/core';
+import { inject, NgZone } from '@angular/core';
 import {
   HttpInterceptorFn,
   HttpErrorResponse,
@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const ngZone = inject(NgZone);
 
   if (req.headers.has('Skip-Auth-Interceptor')) {
     const modifiedReq = req.clone({
@@ -42,6 +43,12 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   // Clonamos la petición con los headers finales
   const modifiedReq = req.clone({ headers });
 
+  // Si la petición es hacia el endpoint de refresh token, no intentamos re-fresh ni interceptar 401s aquí
+  const isRefreshEndpoint = req.url.includes('/auth/refreshToken');
+  if (isRefreshEndpoint) {
+    return next(modifiedReq);
+  }
+
   // Enviamos la petición y manejamos errores 401
   return next(modifiedReq).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -59,10 +66,21 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
             return next(retryReq);
           }),
-          catchError(refreshError => {
-            console.error('Falló la petición de refreshToken:', refreshError);
+          catchError((refreshError: HttpErrorResponse) => {
+            console.error('Falló la petición de refreshToken:', refreshError, 'status:', refreshError?.status);
+            // Limpiar auth siempre
             authService.logout();
-            router.navigate(['']);
+            // Ejecutar la navegación dentro de la NgZone para asegurar que Angular la procese
+            try {
+              ngZone.run(() => {
+                // Si el endpoint de refresh devuelve 401 o no tenemos un status, redirigir a la raíz
+                if (!refreshError || refreshError.status === 401) {
+                  router.navigateByUrl('/');
+                }
+              });
+            } catch (navErr) {
+              console.error('Error al navegar tras refresh fallido:', navErr);
+            }
             return throwError(() => refreshError);
           })
         );
@@ -71,7 +89,11 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
       // Si es 401 pero no tenemos token, redirigir al 
       if (error.status === 401 && !accessToken) {
         authService.logout();
-        router.navigate(['']);
+        try {
+          ngZone.run(() => router.navigateByUrl('/'));
+        } catch (navErr) {
+          console.error('Error al navegar tras 401 sin accessToken:', navErr);
+        }
       }
 
       return throwError(() => error);

@@ -1,7 +1,7 @@
 import { PLATFORM_ID, Injectable, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -134,8 +134,10 @@ export class AuthService {
       return throwError(() => new Error('No hay refresh token disponible'));
     }
 
-    const url = `${this.apiUrl}/auth/refreshToken`;
-    return this.http.post<RefreshResponse>(url, { refreshToken }).pipe(
+  const url = `${this.apiUrl}/auth/refreshToken`;
+  // Añadir cabecera para evitar que el interceptor vuelva a interceptar esta petición
+  const headers = new HttpHeaders().set('Skip-Auth-Interceptor', 'true');
+  return this.http.post<RefreshResponse>(url, { refreshToken }, { headers }).pipe(
       tap((response) => {
         this.setAccessToken(response.accessToken);
         if (response.refreshToken) {
