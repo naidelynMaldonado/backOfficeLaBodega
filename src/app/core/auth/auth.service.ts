@@ -47,7 +47,7 @@ export class AuthService {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
         localStorage.setItem('username', res.nombre);
-        localStorage.setItem('rolname', res.rolnombre);
+        localStorage.setItem('rolename', res.rolnombre);
         localStorage.setItem('userId', res.id.toString());
       })
     );
@@ -117,7 +117,7 @@ export class AuthService {
   }
 
   getUserRoles(): string[] {
-    const role = this.isBrowser() ? localStorage.getItem('rolname') : null;
+  const role = this.isBrowser() ? localStorage.getItem('rolename') : null;
     return role ? [role] : [];
   }
 

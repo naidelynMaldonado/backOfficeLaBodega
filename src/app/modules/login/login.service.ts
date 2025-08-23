@@ -39,8 +39,6 @@ export class LoginService {
       codigo: codigo
     };
     
-    // Add header to skip auth interceptor for login request
-    const headers = new HttpHeaders().set('Skip-Auth-Interceptor', 'true');
     
     return this.http
       .post<LoginColaborador>(
@@ -52,7 +50,9 @@ export class LoginService {
           // Guardar tokens y datos del colaborador en localStorage
           localStorage.setItem('accessToken', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
-          localStorage.setItem('colaborador', JSON.stringify(response));
+          localStorage.setItem('correo', response.correo);
+          localStorage.setItem('username', response.nombre);
+          localStorage.setItem('rolename', response.rolnombre);
 
           // Actualizar el sujeto colaborador
           this.colaboradorSubject.next(response);

@@ -55,13 +55,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   // if (!isAuthEndpoint && environment.apiKey) {
   //   headers = headers.set('yc-key', environment.apiKey);
   // }
-  
-  // Para endpoints de Yalo, usar keyYalo (solo si es necesario)
-  if (isYaloEndpoint && environment.keyYalo) {
-    headers = headers.set('yalo-key', environment.keyYalo);
-  }
-
-  console.log('Encabezados configurados:', headers);
 
   // Clonamos la petición con los headers finales
   const modifiedReq = req.clone({ headers });
@@ -77,11 +70,10 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
         return authService.refreshToken().pipe(
           switchMap((response) => {
             const newToken = response.accessToken;
-            console.log('Refresh exitoso. Nuevo accessToken:', newToken);
 
             // Clonamos de nuevo la petición original con el nuevo token
             let retryHeaders = headers.set('Authorization', `Bearer ${newToken}`);
-            
+
             // TODO: No agregar yc-key hasta que se configure CORS en el servidor
             // Solo agregar yc-key si no es un endpoint de auth
             // if (!isAuthEndpoint && environment.apiKey) {
@@ -95,16 +87,16 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
           catchError(refreshError => {
             console.error('Falló la petición de refreshToken:', refreshError);
             authService.logout();
-            router.navigate(['/login']);
+            router.navigate(['/']);
             return throwError(() => refreshError);
           })
         );
       }
 
-      // Si es 401 pero no tenemos token, redirigir al login
+      // Si es 401 pero no tenemos token, redirigir al 
       if (error.status === 401 && !accessToken) {
-  authService.logout();
-  router.navigate(['/login']);
+        authService.logout();
+        router.navigate(['/']);
       }
 
       return throwError(() => error);

@@ -31,10 +31,6 @@ export const appConfig: ApplicationConfig = {
         ]
       }
     }),
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory
-    },
-    MsalService
+  // MSAL providers moved to main.ts to ensure initialization via APP_INITIALIZER
   ]
 };

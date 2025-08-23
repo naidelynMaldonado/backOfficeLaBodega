@@ -2,7 +2,7 @@ export interface LoginColaborador {
     id: number,
     nombre: string,
     correo: string,
-    password: string,
+    rolnombre: string,
     accessToken: string,
     refreshToken: string
 }

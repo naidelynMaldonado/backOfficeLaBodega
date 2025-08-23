@@ -9,5 +9,5 @@ import { SvgIconComponent } from '../../../../shared/components/iconSvg/iconSvg.
 })
 export class HeaderComponent {
   username = localStorage.getItem('username') || 'Usuario';
-  roleName = localStorage.getItem('rolname') || 'Sin rol';
+  roleName = localStorage.getItem('rolename') || 'Sin rol';
 }

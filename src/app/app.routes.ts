@@ -46,6 +46,10 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'auth-callback',
+    loadComponent: () => import('./modules/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent)
+  },
+  {
     path: 'preview-faqs',
     loadComponent: () => import('./modules/personalization/faqs/preview-faq/preview-faq.component').then(m => m.PreviewFaqComponent)
   },

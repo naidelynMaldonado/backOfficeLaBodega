@@ -7,27 +7,16 @@ import { LoginColaborador } from './login.types';
 import { switchMap } from 'rxjs';
 import { UserService } from '../users/users.service';
 import { environment } from '../../../environments/environment';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { PublicClientApplication } from '@azure/msal-browser';
-import { SvgIconComponent } from '../../shared/components/iconSvg/iconSvg.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MsalService } from '@azure/msal-angular';
 import { CommonModule } from '@angular/common';
-
-export function MSALInstanceFactory() {
-  return new PublicClientApplication(environment.msalConfigs);
-}
+import { FormsModule } from '@angular/forms';
+import { SvgIconComponent } from '../../shared/components/iconSvg/iconSvg.component';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [SvgIconComponent, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
-  providers: [
-    UserService,
-    MsalService,
-    { provide: MSAL_INSTANCE, useFactory: MSALInstanceFactory }
-  ]
+  standalone: true,
+  imports: [CommonModule, FormsModule, SvgIconComponent]
 })
 export class LoginComponent {
 
@@ -51,7 +40,7 @@ export class LoginComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     if(this.loginService.isAuthenticated()) {
-      this.router.navigate(['/main/dashboard']); // Redirect to dashboard instead of home
+      this.router.navigate(['/main/dashboard']);
     }
   }
 
@@ -112,11 +101,8 @@ export class LoginComponent {
           sessionStorage.setItem('usuario', response.correo);
           sessionStorage.setItem('username', response.nombre);
 
-          if (this.code === response.password) {
-            this.router.navigate(['/main/dashboard']); // Redirect to dashboard instead of home
-          } else {
-            // this.alertService.showError('Código de acceso incorrecto');
-          }
+          this.router.navigate(['/main/dashboard']);
+
         },
         error: (err: any) => {
           console.error('Error al buscar colaborador:', err);
