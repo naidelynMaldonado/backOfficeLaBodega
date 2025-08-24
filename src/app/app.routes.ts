@@ -53,6 +53,15 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/credentials-and-permissions/roles/roles.component').then(m => m.RolesComponent)
       },
       {
+        path: 'users',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./modules/credentials-and-permissions/users/users.component').then(m => m.UsersComponent)
+          },
+        ]
+      },
+      {
         path: 'coverage-areas/edit',
         loadComponent: () => import('./modules/coverage-areas/create-zone/create-zone.component').then(m => m.CreateZoneComponent)
       },

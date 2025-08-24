@@ -71,3 +71,16 @@ export interface updateColaborador {
   },
   usuario: string,
 }
+
+export interface ApiUser {
+  id: number;
+  nombre: string;
+  telefono: string;
+  password: string;
+  correo_electronico: string;
+  estado: boolean;
+  modificacionfecha: string;
+  modificacionusuario: string;
+  rolid: number;
+  rolnombre: string;
+}

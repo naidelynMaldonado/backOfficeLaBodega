@@ -1,0 +1,35 @@
+<drawer [(open)]="open" [title]="title" placement="right" size="420px">
+  <div drawer-header>
+    <h3 class="text-lg font-semibold">{{ title }}</h3>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Nombre</label>
+      <input formControlName="nombre" class="w-full border rounded p-2" />
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Teléfono</label>
+      <input formControlName="telefono" class="w-full border rounded p-2" />
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Email</label>
+      <input formControlName="email" class="w-full border rounded p-2" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium">Rol</label>
+      <select formControlName="rolId" class="w-full border rounded p-2">
+        <option [ngValue]="null">--Seleccione--</option>
+        <option *ngFor="let r of roles" [ngValue]="r.id">{{ r.nombre }}</option>
+      </select>
+    </div>
+
+    <div drawer-footer>
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancelar</button>
+      <button type="submit" class="btn-primary ml-2" [disabled]="form.invalid">Guardar</button>
+    </div>
+  </form>
+</drawer>

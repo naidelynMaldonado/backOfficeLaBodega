@@ -53,6 +53,8 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
       if (this.innerDrawer.closed && (this.innerDrawer.closed as any).subscribe) {
         (this.innerDrawer.closed as any).subscribe(() => {
           this.openChange.emit(false);
+          // ensure selections are reset when inner drawer closes internally
+          this.resetPermissionSelections();
         });
       }
     } catch (e) { /* ignore subscribe failures */ }
@@ -71,6 +73,8 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
       // fallback: update local state and emit
   this.open = false;
   this.openChange.emit(false);
+  // reset selections when closed via fallback
+  this.resetPermissionSelections();
     }
   }
 
@@ -97,6 +101,10 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
           this.isLoadingPermissions = false;
         },
         error: (err: any) => {
+      // when drawer closes, clear selections so reopening starts fresh (and mapping will reapply if role exists)
+      if (changes['open'] && changes['open'].currentValue === false) {
+        this.resetPermissionSelections();
+      }
           console.error('Error al cargar permisos:', err);
           this.isLoadingPermissions = false;
         }
@@ -282,32 +290,64 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     const checked = event.target.checked;
     if (checked) {
   submodule.actions?.forEach((a: any) => this.form.get(`action_${a.id}`)?.setValue(true));
-      // si todos los submodules están marcados, marcar el módulo
-      const allSub = module.submodule?.every((s: any) => this.form.get(`submodule_${s.id}`)?.value);
-      if (allSub) this.form.get(`module_${module.id}`)?.setValue(true);
+      // marcar el módulo cuando al menos un submódulo está marcado
+      if (this.form.contains(`module_${module.id}`)) this.form.get(`module_${module.id}`)?.setValue(true);
     } else {
   submodule.actions?.forEach((a: any) => this.form.get(`action_${a.id}`)?.setValue(false));
-      this.form.get(`module_${module.id}`)?.setValue(false);
+      // determinar si el módulo debe permanecer marcado (si queda algún submodule o acción directa marcada)
+      const anySubChecked = module.submodule?.some((s: any) => this.form.get(`submodule_${s.id}`)?.value);
+      const anyModuleActionsChecked = module.actions?.some((a: any) => this.form.get(`action_${a.id}`)?.value);
+      if (!anySubChecked && !anyModuleActionsChecked) {
+        if (this.form.contains(`module_${module.id}`)) this.form.get(`module_${module.id}`)?.setValue(false);
+      }
     }
   }
 
   onActionChange(module: any, submodule: any | null, action: any, event: any) {
     const checked = event.target.checked;
     if (submodule) {
-      const allActions = submodule.actions?.every((act: any) => this.form.get(`action_${act.id}`)?.value);
-      if (allActions) this.form.get(`submodule_${submodule.id}`)?.setValue(true);
-
-  const allSubmodules = module.submodule?.every((s: any) => this.form.get(`submodule_${s.id}`)?.value);
-      if (allSubmodules) this.form.get(`module_${module.id}`)?.setValue(true);
-      if (!checked) {
-        this.form.get(`submodule_${submodule.id}`)?.setValue(false);
-        this.form.get(`module_${module.id}`)?.setValue(false);
+      if (checked) {
+        // si se marca cualquier acción, marcar su submódulo y módulo
+        if (this.form.contains(`submodule_${submodule.id}`)) this.form.get(`submodule_${submodule.id}`)?.setValue(true);
+        if (this.form.contains(`module_${module.id}`)) this.form.get(`module_${module.id}`)?.setValue(true);
+      } else {
+        // si se desmarca, revisar si quedan acciones en el submódulo
+        const anyActionInSubChecked = submodule.actions?.some((act: any) => this.form.get(`action_${act.id}`)?.value);
+        if (!anyActionInSubChecked) {
+          if (this.form.contains(`submodule_${submodule.id}`)) this.form.get(`submodule_${submodule.id}`)?.setValue(false);
+        }
+        // revisar si el módulo aún debe estar marcado
+        const anySubChecked = module.submodule?.some((s: any) => this.form.get(`submodule_${s.id}`)?.value);
+        const anyModuleActionsChecked = module.actions?.some((a: any) => this.form.get(`action_${a.id}`)?.value);
+        if (!anySubChecked && !anyModuleActionsChecked) {
+          if (this.form.contains(`module_${module.id}`)) this.form.get(`module_${module.id}`)?.setValue(false);
+        }
       }
     } else {
       // action belongs to module directly
-  const allModuleActions = module.actions?.every((act: any) => this.form.get(`action_${act.id}`)?.value);
-      if (allModuleActions) this.form.get(`module_${module.id}`)?.setValue(true);
-      if (!checked) this.form.get(`module_${module.id}`)?.setValue(false);
+  if (checked) {
+    if (this.form.contains(`module_${module.id}`)) this.form.get(`module_${module.id}`)?.setValue(true);
+  } else {
+    const anyModuleActionsChecked = module.actions?.some((act: any) => this.form.get(`action_${act.id}`)?.value);
+    const anySubChecked = module.submodule?.some((s: any) => this.form.get(`submodule_${s.id}`)?.value);
+    if (!anyModuleActionsChecked && !anySubChecked) {
+      if (this.form.contains(`module_${module.id}`)) this.form.get(`module_${module.id}`)?.setValue(false);
+    }
+  }
+    }
+  }
+
+  /** Reset all module/submodule/action selections and clear name (used on close) */
+  private resetPermissionSelections() {
+    try {
+      Object.keys(this.form.controls).forEach(k => {
+        if (k.startsWith('module_') || k.startsWith('submodule_') || k.startsWith('action_')) {
+          this.form.get(k)?.setValue(false);
+        }
+      });
+      if (this.form.contains('nombre')) this.form.get('nombre')?.setValue('');
+    } catch (e) {
+      // ignore reset errors
     }
   }
 
