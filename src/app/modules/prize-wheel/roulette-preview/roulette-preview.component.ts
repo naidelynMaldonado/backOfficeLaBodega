@@ -41,6 +41,7 @@ export class RoulettePreviewComponent implements AfterViewInit {
       this.sanitizer.bypassSecurityTrustHtml(this.ICON_CLOSE)
     );
     this.prizeWheelData = data?.prizeWheel ?? [];
+    console.log(this.prizeWheelData);
   }
 
   ngAfterViewInit(): void {
@@ -88,9 +89,18 @@ export class RoulettePreviewComponent implements AfterViewInit {
       } as CSSStyleDeclaration);
 
       const label = document.createElement('span');
-      label.textContent = (item?.info_adicional || '').trim()
-        ? item.info_adicional
-        : item?.tipo_premio || '';
+      let labelText = '';
+      if (item?.tipo_premio === 'Puntos Las Bodega') {
+        const info = (item?.info_adicional || '').trim();
+        if (info) {
+          labelText = `${info} Puntos`;
+        }
+      } else {
+        labelText = (item?.info_adicional || '').trim()
+          ? item.info_adicional
+          : item?.tipo_premio || '';
+      }
+      label.textContent = labelText;
       Object.assign(label.style, {
         color: item?.color_label || '#111',
         position: 'absolute',
