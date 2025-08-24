@@ -19,16 +19,21 @@ import { NavigationItem } from '../../../navigation/navigation.types';
   styles: [
     `
     :host { 
-      display: block; 
-      height: 100%;
+  display: block; 
+  height: 100%;
+  box-sizing: border-box;
     }
     
     /* Contenedor principal */
     .sidebar-container {
       width: 250px;
+      flex: 0 0 250px; /* prevent flex containers from resizing the sidebar */
+      box-sizing: border-box;
       background-color: #063289 !important;
       height: 100%;
       overflow-y: auto;
+      /* reserve scrollbar gutter to avoid layout shift when scroll appears */
+      scrollbar-gutter: stable both-edges;
       position: relative;
       padding-bottom: 60px; /* Espacio para el botón de logout */
     }
@@ -61,6 +66,7 @@ import { NavigationItem } from '../../../navigation/navigation.types';
       cursor: pointer;
       transition: all 0.2s ease;
       text-decoration: none;
+  box-sizing: border-box;
     }
     
     .nav-item.active {
@@ -90,6 +96,7 @@ import { NavigationItem } from '../../../navigation/navigation.types';
       cursor: pointer;
       transition: all 0.2s ease;
       text-decoration: none;
+  box-sizing: border-box;
     }
     
     .nav-child-item.active {
@@ -118,12 +125,14 @@ import { NavigationItem } from '../../../navigation/navigation.types';
     
     /* Material Expansion Panel overrides */
     .mat-expansion-panel {
-      background: #063289 !important;
+  background: #063289 !important;
       color: white !important;
       box-shadow: none !important;
       border-radius: 0 !important;
       margin: 0 !important;
       min-height: 72px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
     }
     
     .mat-expansion-panel-header {
@@ -145,6 +154,12 @@ import { NavigationItem } from '../../../navigation/navigation.types';
     
     .mat-expansion-panel-body {
       padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Ensure all elements inside expansion panels use border-box so width calculations are stable */
+    .mat-expansion-panel, .mat-expansion-panel *, ::ng-deep .mat-expansion-panel, ::ng-deep .mat-expansion-panel * {
+      box-sizing: border-box !important;
     }
     
     .mat-expansion-panel-header .mat-content {

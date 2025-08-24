@@ -61,6 +61,38 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/prize-wheel/edit/edit.component').then(m => m.EditComponent)
       },
       {
+        path: 'home',
+        loadComponent: () => import('./modules/personalization/home/home.component').then(m => m.HomeComponent)
+      },
+      {
+        path: 'home/edit',
+        loadComponent: () => import('./modules/personalization/home/home.component').then(m => m.HomeComponent)
+      },
+      {
+        path: 'about-us',
+        loadComponent: () => import('./modules/personalization/about-us/about-us.component').then(m => m.AboutUsComponent)
+      },
+      {
+        path: 'mission-vision',
+        loadComponent: () => import('./modules/personalization/mission-vision/mission-vision.component').then(m => m.MissionVisionComponent)
+      },
+      {
+        path: 'program-loyalty',
+        loadComponent: () => import('./modules/personalization/program-loyalty/program-loyalty.component').then(m => m.ProgramLoyaltyComponent)
+      },
+      {
+        path: 'coupons',
+        loadComponent: () => import('./modules/coupons/coupons.component').then(m => m.CouponsComponent)
+      },
+      {
+        path: 'la-bodega-tv',
+        loadComponent: () => import('./modules/la-bodega-tv/la-bodega-tv.component').then(m => m.LaBodegaTvComponent)
+      },
+      {
+        path: 'push-notifications',
+        loadComponent: () => import('./modules/push-notifications/push-notifications.component').then(m => m.PushNotificationsComponent)
+      },
+      {
         path: 'users',
         children: [
           {
@@ -110,6 +142,30 @@ export const routes: Routes = [
   {
     path: 'faqs',
     redirectTo: '/main/faqs'
+  },
+  {
+    path: 'about-us',
+    redirectTo: '/main/about-us'
+  },
+  {
+    path: 'mission-vision',
+    redirectTo: '/main/mission-vision'
+  },
+  {
+    path: 'program-loyalty',
+    redirectTo: '/main/program-loyalty'
+  },
+  {
+    path: 'coupons',
+    redirectTo: '/main/coupons'
+  },
+  {
+    path: 'la-bodega-tv',
+    redirectTo: '/main/la-bodega-tv'
+  },
+  {
+    path: 'push-notifications',
+    redirectTo: '/main/push-notifications'
   },
   {
     path: 'faqs/edit',
