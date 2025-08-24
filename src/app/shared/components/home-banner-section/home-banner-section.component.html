@@ -1,0 +1,252 @@
+<section class="bg-[#7bc8eb] w-full pb-4 rounded-b-2xl mb-12">
+  <div class="w-full h-[432px] grid grid-cols-3 gap-2">
+    <div class="h-full w-full rounded-br-2xl overflow-hidden">
+      <div
+        class="w-full h-1/2 bg-[#6FA7EA] flex justify-center items-center p-4 relative"
+      >
+        @if (sectionOne.photo1 != '') {
+        <img
+          [src]="sectionOne.photo1"
+          class="w-[80%] h-[80%] object-contain absolute"
+          alt="primer foto"
+        />
+        }@else {
+        <img
+          src=""
+          alt="primer foto"
+        />
+        }
+      </div>
+      <div
+        class="w-full h-1/2 bg-[#3D82E9] flex justify-center items-center p-4 relative"
+      >
+        @if ( sectionOne.photo2 != '') {
+        <img
+          [src]="sectionOne.photo2"
+          class="w-[80%] h-[80%] object-contain absolute"
+          alt="segunda foto"
+        />
+        }@else {
+        <img src="" alt="segunda foto" />
+        }
+      </div>
+    </div>
+    <div class="h-full w-full flex items-center">
+      <div class="flex flex-col gap-5 w-full">
+        <p class="text-alert-danger-900 text-h-lg text-center">
+          {{ sectionOne.title }}
+        </p>
+        <span class="text-b-md text-center">{{
+          sectionOne.subTitle
+        }}</span>
+        <div class="flex w-full justify-center">
+          <button
+            class="h-[48px] w-[254px] px-4 bg-primary-800 active:bg-primary-600 rounded-2xl text-b-sm text-neutral-0"
+            (click)="navigateToLink()"
+            aria-label="Descubre más productos de cuidado personal"
+          >
+            {{ sectionOne.boton }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="w-full h-full rounded-bl-2xl overflow-hidden relative">
+      @if (sectionOne.photo3 != '') {
+      <img
+        [src]="sectionOne.photo3"
+        class="w-full object-cover"
+        alt="tercera foto"
+      />
+
+      }@else {
+      <img
+        src=""
+        class="w-full object-cover"
+        alt="tercera foto"
+      />
+      }
+    </div>
+  </div>
+  <div class="flex flex-col py-4 px-14">
+    <p class="text-center text-h-md mb-4">
+      {{ productsSectionOne.title }}
+    </p>
+    <div class="grid grid-cols-4 gap-4">
+      @if (productsSectionOne.photo1.image != '') {
+      <div
+        (click)="
+          navigateToLinkPromociones(productsSectionOne.photo1.enlace)
+        "
+        class="cursor-pointer w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            [src]="productsSectionOne.photo1.image"
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">
+            {{ productsSectionOne.photo1.title }}
+          </p>
+          <p class="text-center text-b-md">
+            {{ productsSectionOne.photo1.subTitle }}
+          </p>
+        </div>
+      </div>
+      }@else{
+      <div
+        class="w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            src=""
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">30%</p>
+          <p class="text-center text-b-md">Salud y bienestar</p>
+        </div>
+      </div>
+      } @if (productsSectionOne.photo2.image != '') {
+      <div
+        (click)="
+          navigateToLinkPromociones(productsSectionOne.photo2.enlace)
+        "
+        class="cursor-pointer w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            [src]="productsSectionOne.photo2.image"
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">
+            {{ productsSectionOne.photo2.title }}
+          </p>
+          <p class="text-center text-b-md">
+            {{ productsSectionOne.photo2.subTitle }}
+          </p>
+        </div>
+      </div>
+      }@else{
+      <div
+        class="w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            src=""
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">10%</p>
+          <p class="text-center text-b-md">Cuidado facial y corporal</p>
+        </div>
+      </div>
+      } @if (productsSectionOne.photo3.image != '') {
+      <div
+        (click)="
+          navigateToLinkPromociones(productsSectionOne.photo3.enlace)
+        "
+        class="cursor-pointer w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            [src]="productsSectionOne.photo3.image"
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">
+            {{ productsSectionOne.photo3.title }}
+          </p>
+          <p class="text-center text-b-md">
+            {{ productsSectionOne.photo3.subTitle }}
+          </p>
+        </div>
+      </div>
+      }@else{
+      <div
+        class="w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            src=""
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">40%</p>
+          <p class="text-center text-b-md">Higiene personal</p>
+        </div>
+      </div>
+      } @if (productsSectionOne.photo4.image != '') {
+      <div
+        (click)="
+          navigateToLinkPromociones(productsSectionOne.photo4.enlace)
+        "
+        class="cursor-pointer w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            [src]="productsSectionOne.photo4.image"
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">
+            {{ productsSectionOne.photo4.title }}
+          </p>
+          <p class="text-center text-b-md">
+            {{ productsSectionOne.photo4.subTitle }}
+          </p>
+        </div>
+      </div>
+      }@else{
+      <div
+        class="w-full rounded-2xl bg-primary-600 p-4 flex justify-center items-center flex-col gap-3"
+      >
+        <div
+          class="contPromo w-[198px] h-[198px] rounded-[50%] overflow-hidden"
+        >
+          <img
+            src=""
+            class="mt-[25%] mx-auto"
+            alt="img"
+          />
+        </div>
+        <div class="w-full text-neutral-0">
+          <p class="text-center text-h-lg">20%</p>
+          <p class="text-center text-b-md">Productos antialergicos</p>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

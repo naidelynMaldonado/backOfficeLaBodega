@@ -1,0 +1,18 @@
+<section class="flex flex-col gap-6 w-full mb-8 rounded-2xl py-6">
+  <div class="w-full p-6 rounded-2xl bg-neutral-150">
+    <p class="text-center text-h-lg mb-8">{{ title }}</p>
+    <div class="grid grid-cols-4 gap-4">
+      <div *ngFor="let category of categories" class="flex flex-col items-center">
+        <div [style.background-color]="category.backgroundColor" class="w-[232px] h-[232px] rounded-2xl mb-3 flex justify-center items-center">
+          <img [src]="category.imageUrl" [alt]="'logo ' + category.name" class="w-[128px] h-[125px] object-cover" />
+        </div>
+        <p class="text-b-sm text-center">{{ category.name }}</p>
+      </div>
+    </div>
+    <div class="w-full flex justify-center h-[48px]">
+      <button (click)="onButtonClick()" class="h-[48px] px-8 bg-primary-800 active:bg-primary-600 rounded-2xl text-b-sm text-neutral-0">
+        {{ buttonText }}
+      </button>
+    </div>
+  </div>
+</section>

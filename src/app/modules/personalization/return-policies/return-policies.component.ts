@@ -53,7 +53,7 @@ content: SafeHtml = '';
   }
 
   edit() {
-    location.href = '/office/return-policies/edit';
+    location.href = '/main/return-policies/edit';
   }
   preview(){
     location.href = '/preview-return';

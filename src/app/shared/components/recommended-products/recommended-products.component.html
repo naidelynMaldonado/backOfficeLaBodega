@@ -1,0 +1,67 @@
+<section
+        class="flex flex-col gap-6 w-full mb-12 rounded-2xl px-8 py-6 bg-secondary-orange-50"
+      >
+        <p class="text-h-lg">{{ title }}</p>
+
+        <div class="grid grid-cols-4 gap-4">
+          <div *ngFor="let product of products" class="w-full rounded-2xl bg-neutral-0 overflow-hidden">
+            <div class="w-full h-[200px] p-6 bg-neutral-150" [ngClass]="{'relative': product.hasTag}">
+              <img
+                [src]="product.imageUrl"
+                class="h-[160px] mx-auto object-contain"
+                [alt]="product.name"
+              />
+              <span
+                *ngIf="product.hasTag"
+                class="py-1 text-b-xs rounded-lg px-4 bg-alert-danger-900 text-neutral-0 absolute right-4 top-4"
+                >{{ product.tagText }}</span>
+            </div>
+
+            <div class="py-4 px-6 flex flex-col gap-2 text-b-sm">
+              <p class="font-bold">{{ product.name }}</p>
+              <div class="flex gap-2">
+                <span class="text-neutral-500 line-through">{{ product.originalPrice }}</span>
+                <span class="font-bold">{{ product.salePrice }}</span>
+              </div>
+              <div
+                *ngIf="product.pointsPrice"
+                class="h-[28px] bg-alert-warning-900 text-b-xs text-neutral-700 flex items-center gap-2 px-2"
+              >
+                <mat-icon
+                  aria-hidden="false"
+                  svgIcon="bodega"
+                  class="!w-[18px] !z-0 !p-0 !m-0 !h-[18px]"
+                ></mat-icon>
+                <span>{{ product.pointsPrice }}</span>
+              </div>
+              <div class="flex gap-4 items-center my-2">
+                <button
+                  class="border border-neutral-400 w-[40px] h-[40px] rounded-2xl flex items-center justify-center"
+                >
+                  <mat-icon
+                    aria-hidden="false"
+                    svgIcon="low"
+                    class="!w-[14px] !z-0 !p-0 !m-0 !h-[2px]"
+                  ></mat-icon>
+                </button>
+                <span>{{ product.quantity }}</span>
+                <button
+                  class="border border-neutral-400 w-[40px] h-[40px] rounded-2xl"
+                >
+                  <mat-icon
+                    aria-hidden="false"
+                    svgIcon="up"
+                    class="!w-[12px] !z-0 !p-0 !m-0 !h-[12px]"
+                  ></mat-icon>
+                </button>
+              </div>
+              <button
+                (click)="addToCart(product)"
+                class="h-[48px] w-full px-4 bg-primary-800 active:bg-primary-600 rounded-2xl text-b-sm text-neutral-0"
+              >
+                Agregar al carrito
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
