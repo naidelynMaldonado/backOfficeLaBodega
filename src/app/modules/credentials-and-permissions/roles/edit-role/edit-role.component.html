@@ -1,4 +1,4 @@
-<drawer [(open)]="open" (openChange)="openChange.emit($event)" [title]="title" placement="right">
+<drawer [(open)]="open" (openChange)="onInnerOpenChange($event)" (closed)="onInnerClosed()" [title]="title" placement="right">
   <div drawer-header>
     <h2 class="text-lg font-semibold">{{ title }}</h2>
   </div>

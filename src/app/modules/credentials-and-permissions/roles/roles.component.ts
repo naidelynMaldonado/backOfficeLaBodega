@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { EditRoleComponent } from './edit-role/edit-role.component';
-import { LoadingService } from '../../../core/services/loading.service';
+import { finalize } from 'rxjs/operators';
 
 interface ApiRole {
   rolid: number;
@@ -23,29 +23,24 @@ interface ApiRole {
 export class RolesComponent implements OnInit {
 
   roles: rol[] = [];
+  loading = false;
   selectedRole: rol | null = null;
   // Control para el drawer de creación/edición
   editDrawerOpen = false;
   editDrawerTitle = 'Editar Rol';
 
 
-  constructor(
-  private rolesService: RolesService, 
-  private loadingService: LoadingService,
-  ) { }
+  constructor(private rolesService: RolesService) { }
 
   ngOnInit() {
     this.loadRoles();
   }
 
   loadRoles() {
-    this.rolesService.fetchRoles().subscribe({
-      next: (roles) => {
-        this.roles = roles;
-      },
-      error: (error: any) => {
-        console.error('Error al cargar roles desde API, usando fallback local:', error);
-      }
+    this.loading = true;
+    this.rolesService.fetchRoles().pipe(finalize(() => this.loading = false)).subscribe({
+      next: (roles) => { this.roles = roles; },
+      error: (error: any) => { console.error('Error al cargar roles desde API, usando fallback local:', error); }
     });
   }
 
@@ -54,14 +49,10 @@ export class RolesComponent implements OnInit {
 
   onToggleActive(r: rol) {
     const newStatus = r.estado === 'activo' ? false : true;
-    this.rolesService.toggleRoleActive(r.id, newStatus).subscribe({
-      next: () => {
-        // Recargar la lista para reflejar el cambio
-        this.loadRoles();
-      },
-      error: (error: any) => {
-        console.error('Error al cambiar estado del rol:', error);
-      }
+    this.loading = true;
+    this.rolesService.toggleRoleActive(r.id, newStatus).pipe(finalize(() => this.loading = false)).subscribe({
+      next: () => { this.loadRoles(); },
+      error: (error: any) => { console.error('Error al cambiar estado del rol:', error); }
     });
   }
 

@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewIni
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { DrawerComponent } from '../../../../shared/components/drawer/drawer.component';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { RolesService } from '../roles.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   form: FormGroup;
   permissionModules: any[] = [];
   isLoadingPermissions = false;
+  savingRole = false;
 
   constructor(private rolesService: RolesService, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -37,28 +39,8 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
   private subs: Subscription[] = [];
 
   ngAfterViewInit(): void {
-    if (!this.innerDrawer) return;
-    // Forward openChange and closed events from inner drawer to parent
-    const s1 = new Subscription();
-    // The drawer exposes openChange via EventEmitter; we can listen by overriding its openChange
-    // but since it's a simple class we can patch by assigning a listener via the element's native EventEmitter
-    // Use a crude approach: subscribe to closed via instance event emitter
-    try {
-      // @ts-ignore - access to EventEmitter
-      if (this.innerDrawer.openChange && (this.innerDrawer.openChange as any).subscribe) {
-        (this.innerDrawer.openChange as any).subscribe((v: boolean) => {
-          this.openChange.emit(v);
-        });
-      }
-      if (this.innerDrawer.closed && (this.innerDrawer.closed as any).subscribe) {
-        (this.innerDrawer.closed as any).subscribe(() => {
-          this.openChange.emit(false);
-          // ensure selections are reset when inner drawer closes internally
-          this.resetPermissionSelections();
-        });
-      }
-    } catch (e) { /* ignore subscribe failures */ }
-    this.subs.push(s1);
+  // Not using runtime EventEmitter subscriptions here. The template now forwards events
+  // to onInnerOpenChange and onInnerClosed handlers which forward to parent and reset state.
   }
 
   ngOnDestroy(): void {
@@ -110,6 +92,18 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
         }
       });
     }
+  }
+
+  // Handler called from template when inner drawer open state changes
+  onInnerOpenChange(open: boolean){
+    this.openChange.emit(open);
+  }
+
+  // Handler called when inner drawer emits closed()
+  onInnerClosed(){
+    // Forward closed to parent and reset selections so drawer can reopen cleanly
+    this.openChange.emit(false);
+    this.resetPermissionSelections();
   }
 
   /** If `role` input is provided, load its assigned permissions and set controls */
@@ -403,11 +397,12 @@ export class EditRoleComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     };
 
     const roleId = this.role?.id;
-    this.rolesService.saveRole(payload, roleId).pipe().subscribe({
+    this.savingRole = true;
+    this.rolesService.saveRole(payload, roleId).pipe(finalize(() => this.savingRole = false)).subscribe({
       next: (resp: any) => {
         console.log('Rol guardado:', resp);
-  this.saved.emit(resp);
-  this.closeDrawer();
+        this.saved.emit(resp);
+        this.closeDrawer();
       },
       error: (err: any) => console.error('Error guardando rol:', err)
     });

@@ -3,8 +3,7 @@ import { rol } from './roles.types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { map, take, finalize } from 'rxjs/operators';
-import { LoadingService } from '../../../core/services/loading.service';
+import { map, take } from 'rxjs/operators';
 
 interface ApiRole {
   rolid: number;
@@ -14,12 +13,11 @@ interface ApiRole {
 
 @Injectable({ providedIn: 'root' })
 export class RolesService {
-  constructor(private http: HttpClient, private loadingService: LoadingService) {}
+  constructor(private http: HttpClient) {}
 
   /** Fetch roles from API and map to local shape */
   fetchRoles(): Observable<rol[]> {
     const url = `${environment.apiURL}/users/roles`;
-    this.loadingService.onLoading();
     return this.http.get<ApiRole[]>(url).pipe(
       take(1),
       map((apiRoles: ApiRole[]) => apiRoles.map(apiRole => ({
@@ -27,17 +25,14 @@ export class RolesService {
         nombre: apiRole.rolnombre,
         estado: apiRole.activo ? 'activo' : 'inactivo',
         permissions: {}
-      }))),
-      finalize(() => this.loadingService.offLoading())
+      })))
     );
   }
 
   toggleRoleActive(id: number, newStatus: boolean) {
     const url = `${environment.apiURL}/users/roles/${id}/active`;
-    this.loadingService.onLoading();
     return this.http.patch(url, { activo: newStatus }).pipe(
-      take(1),
-      finalize(() => this.loadingService.offLoading())
+      take(1)
     );
   }
 
@@ -55,12 +50,10 @@ export class RolesService {
   saveRole(roleData: any, roleId?: number) {
     if (roleId) {
       const url = `${environment.apiURL}/users/roles/${roleId}`;
-      this.loadingService.onLoading();
-      return this.http.patch(url, roleData).pipe(finalize(() => this.loadingService.offLoading()));
+      return this.http.patch(url, roleData).pipe(take(1));
     }
     const url = `${environment.apiURL}/users/roles`;
-    this.loadingService.onLoading();
-    return this.http.post(url, roleData).pipe(finalize(() => this.loadingService.offLoading()));
+    return this.http.post(url, roleData).pipe(take(1));
   }
 
 }

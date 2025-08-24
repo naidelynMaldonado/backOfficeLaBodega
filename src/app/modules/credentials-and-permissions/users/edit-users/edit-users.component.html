@@ -1,35 +1,45 @@
-<drawer [(open)]="open" [title]="title" placement="right" size="420px">
+<drawer [(open)]="open" (openChange)="onInnerOpenChange($event)" (closed)="onInnerClosed()" [title]="title" placement="right" size="420px">
   <div drawer-header>
     <h3 class="text-lg font-semibold">{{ title }}</h3>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="save()">
+    <!-- Spinner overlay while loading or saving -->
+    <div *ngIf="loadingRoles || loadingUser || saving" class="absolute inset-0 z-50 flex items-center justify-center bg-white/70">
+      <div class="loader"></div>
+    </div>
     <div class="mb-3">
-      <label class="block text-sm font-medium">Nombre</label>
-      <input formControlName="nombre" class="w-full border rounded p-2" />
+  <label class="block text-sm font-medium">Nombre</label>
+  <input formControlName="nombre" class="w-full border rounded p-2" />
     </div>
 
     <div class="mb-3">
-      <label class="block text-sm font-medium">Teléfono</label>
-      <input formControlName="telefono" class="w-full border rounded p-2" />
+  <label class="block text-sm font-medium">Teléfono</label>
+  <input formControlName="telefono" class="w-full border rounded p-2" />
     </div>
 
     <div class="mb-3">
-      <label class="block text-sm font-medium">Email</label>
-      <input formControlName="email" class="w-full border rounded p-2" />
+  <label class="block text-sm font-medium">Email</label>
+  <input formControlName="email" class="w-full border rounded p-2" />
     </div>
 
     <div class="mb-4">
-      <label class="block text-sm font-medium">Rol</label>
-      <select formControlName="rolId" class="w-full border rounded p-2">
+  <label class="block text-sm font-medium">Rol</label>
+  <select formControlName="rolId" class="w-full border rounded p-2">
         <option [ngValue]="null">--Seleccione--</option>
         <option *ngFor="let r of roles" [ngValue]="r.id">{{ r.nombre }}</option>
       </select>
     </div>
 
     <div drawer-footer>
-      <button type="button" class="btn-secondary" (click)="cancel()">Cancelar</button>
-      <button type="submit" class="btn-primary ml-2" [disabled]="form.invalid">Guardar</button>
+      <button type="button" class="btn-secondary" (click)="cancel()" [disabled]="saving">Cancelar</button>
+      <button type="submit" class="btn-primary ml-2" [disabled]="form.invalid || saving">Guardar</button>
     </div>
   </form>
 </drawer>
+
+<!-- Small inline loader styles (kept local) -->
+<style>
+.loader{ border:4px solid rgba(0,0,0,0.1); border-left-color:#4f46e5; height:36px; width:36px; border-radius:9999px; animation: spin 1s linear infinite; }
+@keyframes spin{ to{ transform: rotate(360deg); } }
+</style>
