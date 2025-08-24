@@ -1,0 +1,47 @@
+/* reset mínimo */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* El contenedor de la ruleta */
+.container {
+  position: relative;
+  width: 450px;       /* puedes hacerlo responsive si quieres */
+  aspect-ratio: 1/1;  /* asegura círculo perfecto */
+  display: grid;
+  place-items: center;
+  isolation: isolate; /* evita mezclas raras con el fondo */
+}
+
+/* La rueda como capa inferior */
+.wheel {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: #333 1px solid;
+  z-index: 1; /* debajo del overlay */
+  background: transparent;
+}
+
+/* Overlay encima, sin mezclar colores y sin bloquear eventos */
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: normal; /* <-- NO multiply */
+  opacity: 1;
+}
+
+/* Puedes agregar estilos base a cada sector si prefieres no usar inline */
+.premios {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

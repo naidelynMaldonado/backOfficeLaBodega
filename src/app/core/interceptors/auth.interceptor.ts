@@ -40,6 +40,17 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     headers = headers.set('Authorization', `Bearer ${accessToken}`);
   } 
 
+  // Agregar lb-api-key si está configurado en environment
+  try {
+    const lbApiKey = environment.apiKey ?? (environment as any).lbApiKey;
+    if (lbApiKey) {
+      headers = headers.set('lb-api-key', lbApiKey);
+    }
+  } catch (e) {
+    // en caso de que environment no esté disponible o tenga otra estructura, no bloquear la petición
+    console.warn('No se pudo agregar lb-api-key desde environment', e);
+  }
+
   // Clonamos la petición con los headers finales
   const modifiedReq = req.clone({ headers });
 

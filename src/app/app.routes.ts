@@ -53,6 +53,14 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/credentials-and-permissions/roles/roles.component').then(m => m.RolesComponent)
       },
       {
+        path: 'prize-wheel',
+        loadComponent: () => import('./modules/prize-wheel/prize-wheel.component').then(m => m.PrizeWheelComponent)
+      },
+      {
+        path: 'prize-wheel/edit',
+        loadComponent: () => import('./modules/prize-wheel/edit/edit.component').then(m => m.EditComponent)
+      },
+      {
         path: 'users',
         children: [
           {

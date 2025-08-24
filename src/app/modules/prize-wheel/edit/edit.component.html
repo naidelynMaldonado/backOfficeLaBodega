@@ -1,0 +1,234 @@
+<div class="mb-8 flex justify-between px-4">
+  <div class="flex flex-col">
+    <p class="text-h-sm m-0">Programa de puntos</p>
+  </div>
+
+  <div class="h-[48px] flex gap-2">
+    <button
+      class="rounded-2xl border px-4 h-full bg-neutral-0 py-2 active:bg-neutral-100 text-b-sm font-bold text-primary-800 border-primary-800"
+      routerLink="/office/prize-wheel/"
+    >
+      Cancelar
+    </button>
+    <button
+      class="bg-primary-800 rounded-2xl w-[150px] h-full text-neutral-0 text-b-sm active:bg-primary-900"
+      (click)="onSubmit()"
+    >
+      Guardar cambios
+    </button>
+  </div>
+</div>
+
+<div class="flex flex-col gap-4 w-full">
+  <form [formGroup]="form">
+    <section class="w-full bg-neutral-0 rounded-2xl p-4 text-b-sm">
+      <p class="text-b-md mb-6">Configuración básica</p>
+
+      <div class="flex gap-2 w-full">
+        <div
+          class="w-[45%] min-w-[350px] border border-neutral-200 rounded-2xl overflow-hidden"
+        >
+          <div
+            class="w-full h-[60%] border-b border-neutral-200 bg-neutral-0 flex justify-center items-center"
+          >
+            <div class="min-h-[140px] w-full px-4 flex flex-col justify-center">
+              <p class="text-b-sm text-center mb-3">
+                Monto mínimo para participar
+              </p>
+              <input
+                type="text"
+                formControlName="amount"
+                autocomplete="off"
+                class="h-10 w-full rounded-2xl border px-4 py-3 text-neutral-900 outline-none border-neutral-900 text-center"
+              />
+            </div>
+          </div>
+          <div
+            class="p-4 h-[40%] w-full flex justify-center items-center bg-neutral-150"
+          >
+            <div
+              class="w-full h-full flex gap-3 justify-center items-center text-primary-800"
+            >
+              <mat-icon
+                aria-hidden="false"
+                svgIcon="alert"
+                class="!w-[35px] !p-0 !m-0 !h-[35px]"
+              ></mat-icon>
+              <p>
+                Los compradores que alcancen el monto mínimo podrán participar
+                de la ruleta.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="w-full border border-neutral-200 rounded-2xl flex overflow-hidden"
+        >
+          <div class="w-[63%] min-h-[205px] p-6 flex flex-col gap-4">
+            <p class="text-h-sm">Regalo del día</p>
+
+            <div>
+              <p class="text-h-xxs">{{ infoRouletteAwards?.regalo_del_dia }}</p>
+              <p class="text-b-sm mb-2">
+                Cod. {{ infoRouletteAwards?.cod_producto }} • SKU:
+                {{ infoRouletteAwards?.sku_regalo }}
+              </p>
+              <p class="text-b-sm">
+                Existencia: {{ infoRouletteAwards?.existencia_regalo }}
+              </p>
+            </div>
+
+            <div class="flex gap-3 items-center">
+              <input
+                type="checkbox"
+                value=""
+                class="w-4 h-4 text-primary-400 bg-neutral-150 border-neutral-200 rounded focus:ring-primary-600 focus:ring-2"
+              />
+              <span>Desactivar el regalo en caso de no tener existencias.</span>
+            </div>
+          </div>
+          <div
+            class="min-w-[230px] w-[37%] relative min-h-[205px] h-auto bg-neutral-150 p-4 flex items-center"
+          >
+            <img
+              [src]="infoRouletteAwards?.image_url"
+              class="w-full max-h-[205px] object-contain mx-auto"
+              alt="imagen del producto"
+            />
+            <button
+              class="w-[90%] h-[40px] py-1 absolute bottom-4 rounded-2xl bg-primary-800 text-neutral-0 active:bg-primary-600"
+              (click)="openUpdateProduct()"
+            >
+              Cambiar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="w-full bg-neutral-0 rounded-2xl p-4 text-b-sm">
+      <p class="text-b-md mb-6">Configuración de premios</p>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="w-full rounded-2xl overflow-hidden px-4">
+          <div
+            class="w-full h-[52px] font-bold grid grid-cols-[30px_1fr_1fr_50px_50px_50px] justify-center items-center"
+          >
+            <p></p>
+            <!-- Primera columna con ancho fijo de 50px -->
+            <p>Tipo de premio</p>
+            <p>Info adicional</p>
+            <p>Color fondo</p>
+            <p>Color texto</p>
+            <p></p>
+            <!-- Última columna con ancho fijo de 50px -->
+          </div>
+
+          <div formArrayName="prizeWheel">
+            @for (item of wheel.controls; track $index) {
+            <div
+              [formGroupName]="$index"
+              *ngIf="item.value.estado === true"
+              class="w-full min-h-[48px] h-auto mb-4 bg-neutral-0 items-center grid grid-cols-[20px_1fr_1fr_50px_50px_50px] gap-1"
+            >
+              <mat-icon
+                aria-hidden="false"
+                svgIcon="points"
+                class="!w-[16px] !p-0 !m-0 !h-[24px]"
+              ></mat-icon>
+
+              <div class="w-full h-[48px] relative">
+                <select
+                    formControlName="tipo_premio"
+                  class="pl-4 pr-6 w-full h-full border appearance-none border-neutral-900 rounded-2xl"
+                >
+                  <option value="Puntos Las Bodega" class="p-5">Puntos Las Bodega</option>
+                  <option value="Envío gratis">Envío gratis</option>
+                  <option value="Sigue intentando">Sigue intentando</option>
+                  <option value="Regalo del día">Regalo del día</option>
+                  <option value="Volver a girar">Volver a girar</option>
+                </select>
+                <mat-icon
+                  aria-hidden="false"
+                  svgIcon="row-down"
+                  class="!w-[12px] !z-0 !p-0 !m-0 !mr-2 !h-[7px] absolute right-1 !mt-[20px]"
+                ></mat-icon>
+              </div>
+
+                <div class="w-full relative">
+                  <input
+                    type="text"
+                    formControlName="info_adicional"
+                    value="100"
+                    autocomplete="off"
+                    class="h-[48px] w-full rounded-2xl border px-4 py-3 text-neutral-900 outline-none border-neutral-900"
+                  />
+                </div>
+                <div class="w-full relative flex justify-center">
+                  <input
+                    type="color"
+                    formControlName="color_background"
+                    value="100"
+                    autocomplete="off"
+                    class="h-[30px] w-[30px] rounded-full px-0 py-0 text-neutral-900 outline-none border-none bg-transparent"
+                  />
+                </div>
+                <div class="w-full relative flex justify-center">
+                  <input
+                    type="color"
+                    formControlName="color_label"
+                    value="100"
+                    autocomplete="off"
+                    class="h-[30px] w-[30px] rounded-full px-0 py-0 text-neutral-900 outline-none border-none bg-transparent"
+                  />
+                </div>
+                <div>
+                  <mat-icon
+                  (click)="removeItemWheel($index)"
+                    aria-hidden="false"
+                    svgIcon="delete"
+                    class="!w-[18px] !p-0 !m-0 !h-[20px] cursor-pointer active:bg-neutral-200"
+                  ></mat-icon>
+                </div>
+            </div>
+            }
+          </div>
+
+          <button
+          *ngIf="isAdd"
+            class="w-full h-[48px] border border-primary-800 rounded-2xl flex items-center justify-center text-primary-800 active:bg-neutral-150"
+            (click)="addItemWheel()"
+          >
+            <span class="text-h-xxs">Añadir premio</span>
+            <mat-icon
+              aria-hidden="false"
+              svgIcon="sum"
+              class="!w-[14px] !p-0 !m-0 !ml-2 !h-[14px] cursor-pointer active:bg-neutral-200"
+            ></mat-icon>
+          </button>
+        </div>
+
+        <div
+          class="w-full min-h-[510px] h-auto flex flex-col p-6 bg-neutral-150 border border-neutral-200 rounded-2xl overflow-hidden"
+        >
+          <div class="w-full flex justify-center mb-6">
+            <button
+              class="rounded-2xl px-4 py-2 bg-alert-danger-900 active:bg-alert-red-900 text-neutral-0"
+              (click)="viewRoulette()"
+            >
+              Vista previa
+            </button>
+          </div>
+          <div class="w-full h-full flex justify-center items-center">
+            <img
+              src="./assets/img/ruleta1.png"
+              alt="imagen de la ruleta"
+              class="w-[368px] h-[368px]"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

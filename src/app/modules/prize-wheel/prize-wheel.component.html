@@ -1,3 +1,94 @@
 <p>
   prize-wheel works!
 </p>
+<div class="mb-8 flex justify-between px-4">
+    <div class="flex flex-col">
+        <p class="text-h-sm m-0">Ruleta de premios</p>
+    </div>
+    
+    <div class="h-[48px] flex gap-2">
+        <button 
+        class="bg-[#063289] rounded-2xl w-[150px] h-full text-neutral-50 text-b-sm active:bg-[#041c4d]" 
+        routerLink="/main/prize-wheel/edit"
+        >
+            Editar
+        </button>
+    </div>
+</div>
+
+<div class="flex flex-col gap-4 w-full">
+
+    <section class="w-full bg-neutral-0 rounded-2xl p-4 text-b-sm">
+        <p class="text-b-md mb-6">Configuración básica</p>
+
+        <div class="flex gap-2 w-full ">
+            <div class="w-[45%] min-w-[350px] border border-neutral-200 rounded-2xl overflow-hidden">
+                <div class="w-full h-[60%] border-b border-neutral-200 bg-neutral-0 flex justify-center items-center">
+                    <div class="min-h-[140px] flex flex-col justify-center">
+                        <p class="text-b-sm text-center mb-3">Monto mínimo para participar</p>
+                        <p class="text-h-sm text-center">L. {{ infoRouletteAwards?.monto_minimo }}</p>
+                    </div>
+                </div>
+                <div class="p-4 h-[40%] w-full flex justify-center items-center bg-neutral-150">
+                    <div class="w-full h-full flex gap-3 justify-center items-center text-[#063289]">
+                        <mat-icon aria-hidden="false" svgIcon="alert" class="!w-[35px] !p-0 !m-0 !h-[35px]"></mat-icon>
+                        <p>Los compradores que alcancen el monto mínimo podrán participar de la ruleta.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full border border-neutral-200 rounded-2xl flex overflow-hidden">
+                <div class="w-[63%] min-h-[205px] p-6 flex flex-col gap-4">
+                    <p class="text-h-sm">Regalo del día</p>
+                    
+                    <div>
+                        <p class="text-h-xxs">{{ infoRouletteAwards?.regalo_del_dia }}</p>
+                        <p class="text-b-sm mb-2">Cod. {{ infoRouletteAwards?.cod_producto }} • SKU: {{ infoRouletteAwards?.sku_regalo }}</p>
+                        <p class="text-b-sm">Existencia: {{ infoRouletteAwards?.existencia_regalo }}</p>
+                    </div>
+
+                    <div class="flex gap-3 items-center">
+                        <input type="checkbox" value="" class="w-4 h-4 text-primary-400 bg-neutral-150 border-neutral-200 rounded focus:ring-primary-600 focus:ring-2">
+                        <span>Desactivar el regalo en caso de no tener existencias.</span>
+                    </div>
+                </div>
+                <div class="min-w-[230px] w-[37%] relative min-h-[205px] h-auto bg-neutral-150 p-4 flex items-center">
+                    <img [src]="infoRouletteAwards?.image_url"  class="w-full max-h-[205px] object-contain mx-auto" alt="imagen del producto">
+                    <!--<button class="w-[90%] h-[40px] py-1 absolute bottom-4 rounded-2xl bg-[#063289] text-neutral-0 active:bg-primary-600" (click)="openUpdateProduct()">
+                        Cambiar
+                    </button>--->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full bg-neutral-0 rounded-2xl p-4 text-b-sm">
+        <p class="text-b-md mb-6">Configuración de premios</p>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="w-full rounded-2xl overflow-hidden">
+                <div class="w-full rounded-2xl border border-neutral-200 overflow-hidden">
+                    <div class="w-full h-[52px] px-4 font-bold bg-neutral-150 border-b border-neutral-200 flex items-center">
+                        <p class="w-1/2">Tipo de premio</p>
+                        <p class="w-1/2">Info adicional</p>
+                    </div>
+                    @for (item of configRoulette; track $index) {
+                        <div class="w-full min-h-[52px] h-auto px-4 bg-neutral-0 flex items-center border-b border-neutral-200">
+                            <p class="w-1/2">{{ item.tipo_premio }}</p>
+                            <p class="w-1/2">{{ item.info_adicional ?? '' }}</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="w-full min-h-[510px] h-auto p-6 bg-neutral-150 border border-neutral-200 rounded-2xl overflow-hidden">
+                <div class="w-full flex justify-center mb-6">
+                    <button class="rounded-2xl px-4 py-2 bg-alert-danger-900 active:bg-alert-red-900 text-neutral-0" (click)="openDialog()">Vista previa</button>
+                </div>
+                <div class="w-full flex justify-center">
+                    <img src="./assets/img/ruleta1.png" alt="imagen de la ruleta" class="w-[368px] h-[368px]">
+                </div>
+            </div>
+        </div>
+    </section>
+</div>   

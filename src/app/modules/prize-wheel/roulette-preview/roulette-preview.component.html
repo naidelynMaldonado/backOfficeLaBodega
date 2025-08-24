@@ -1,0 +1,29 @@
+<mat-dialog-content
+  class="w-[720px] flex items-center justify-center py-3 px-3 h-[560px] relative"
+>
+  <div
+    class="!px-6 !pt-6 flex justify-between items-center w-full absolute top-0"
+  >
+    <h2 class="text-h-sm text-center mx-auto">Vista previa de la ruleta</h2>
+
+    <button mat-button mat-dialog-close class="absolute top-2 right-2">
+      <mat-icon
+        aria-hidden="false"
+        svgIcon="close"
+        class="!w-[35px] !p-0 !m-0 !h-[35px]"
+      ></mat-icon>
+    </button>
+  </div>
+
+  <div class="container my-2 relative">
+    <!-- rueda -->
+    <div #wheel class="wheel"></div>
+
+    <!-- overlay: puntero/aro superior -->
+    <img
+      src="assets/img/example-6-overlay.svg"
+      class="overlay"
+      alt="overlay"
+    />
+  </div>
+</mat-dialog-content>
