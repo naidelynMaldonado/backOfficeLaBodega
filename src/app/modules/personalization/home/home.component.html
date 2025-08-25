@@ -1,3 +1,267 @@
-<p>
-  home works!
-</p>
+<div class="mb-4 flex justify-between items-center px-4">
+    <div class="flex flex-col">
+        <div class="flex items-center">
+            <span class="text-neutral-500 text-b-sm mr-2">Personalización</span>
+            <iconSvg name="arrowRight" class="!w-[7px] !z-0 !p-0 !m-0 !mr-2 !h-[11px]"></iconSvg>
+        </div>
+        <p class="text-h-sm m-0">Página de inicio</p>
+    </div>
+
+    <div class="h-[48px] flex items-center gap-2">
+        <button
+            class="rounded-2xl border w-[48px] h-full bg-neutral-50 p-2.5 active:bg-neutral-100 flex items-center justify-center"
+            routerLink="/preview-home">
+            <iconSvg name="eye" class="!w-[24px] !z-0 !p-0 !m-0 !h-[24px]"></iconSvg>
+        </button>
+        <button
+            class="bg-[#002485] rounded-2xl w-[150px] h-full text-neutral-50 text-b-sm active:bg-primary-900 flex items-center justify-center"
+            routerLink="/main/home/edit">
+            Editar
+        </button>
+    </div>
+</div>
+
+<div class="flex flex-col gap-4">
+    <div class="w-full bg-neutral-50 rounded-2xl p-4 text-sm">
+        <div class="grid grid-cols-2 w-full gap-2">
+            <div class="flex flex-col gap-8 w-full">
+                <article className="gap-0.5 w-full">
+                    <p className="text-neutral-900">Titulo</p>
+                    <p className="text-neutral-900">{{ header?.titulo }}</p>
+                </article>
+
+                <article className="gap-0.5 w-full">
+                    <p className="text-neutral-900">Sub-título</p>
+                    <p className="text-neutral-900">{{ header?.subtitulo }}</p>
+                </article>
+
+                <div class="grid grid-cols-2 w-full">
+                    <article className="gap-0.5 w-full">
+                        <p className="text-neutral-900">Botón</p>
+                        <p className="text-neutral-900">{{ header?.boton_texto }}</p>
+                    </article>
+
+                    <article className="gap-0.5 w-full overflow-hidden pr-2">
+                        <p className="text-neutral-900">Enlace</p>
+                        <span class="text-primary-800 truncate">{{ header?.enlace_destino }}</span>
+                    </article>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="w-full flex flex-col gap-2">
+                        <p className="text-neutral-900">Foto 1</p>
+                        <div class="h-[150px] w-full bg-neutral-150 border border-neutral-200 rounded-2xl p-2">
+                            <img [src]="images?.foto1" class="w-full h-full object-contain" alt="vista previa">
+
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                        <p className="text-neutral-900">Foto 2</p>
+                        <div class="h-[150px] w-full bg-neutral-150 border border-neutral-200 rounded-2xl p-2">
+                            <img [src]="images?.foto2" class="w-full h-full object-contain" alt="vista previa">
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                        <p className="text-neutral-900">Foto 3</p>
+                        <div class="h-[150px] w-full p-2 bg-neutral-150 border border-neutral-200 rounded-2xl">
+                            <img [src]="images?.foto3" class="w-full h-full object-contain" alt="vista previa">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full h-auto px-4 py-6 bg-neutral-150 border border-neutral-200 rounded-2xl">
+                <div class="w-full h-7 flex justify-center mb-6">
+                    <button class="w-auto h-full rounded-2xl px-3 bg-red-700 text-neutral-50 active:bg-red-900"
+                        routerLink="/preview-home">Vista previa</button>
+                </div>
+
+                <img src="/assets/img/viewHome.png" class="w-full min-h-[385px] object-contain" alt="vista previa">
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full bg-neutral-50 rounded-2xl p-4 text-sm">
+        <div class="rounded-2xl flex flex-col overflow-hidden">
+            <div class="grid grid-cols-4 gap-2 ">
+
+                <ng-container *ngIf="promociones && promociones.length; else noPromos">
+                    <div *ngFor="let promo of promociones; let i = index" class="border border-neutral-400 rounded-lg">
+                        <div class="h-[180px] w-full flex justify-center my-2">
+                            <img [src]="promo.imagen" class="h-full object-contain"
+                                [alt]="promo.titulo || ('Promocion ' + (i+1))">
+                        </div>
+
+                        <div class="w-full p-3 flex flex-col gap-3">
+                            <p>Titulo</p>
+                            <span>{{ promo.titulo }}</span>
+
+                            <p>Sub-título</p>
+                            <span>{{ promo.subtitulo }}</span>
+
+                            <p>Enlace</p>
+                            <a [href]="promo.enlace_destino" class="text-primary-800 truncate" target="_blank"
+                                rel="noopener noreferrer">{{ promo.enlace_destino }}</a>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #noPromos>
+                    <div class="p-4 text-neutral-500">No hay promociones para mostrar.</div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full bg-neutral-50 rounded-2xl p-4 text-sm">
+        <p class="mb-4">Productos recomendados</p>
+        <div *ngFor="let seccion of seccionesRecomendados" class="grid grid-cols-3 gap-4 mb-4">
+            <div class="w-full rounded-2xl flex flex-col border overflow-hidden border-neutral-200">
+                <div
+                    class="cursor-pointer rounded-t-2xl border border-neutral-200 flex items-center justify-center flex-col h-[400px]">
+                    <label class="flex flex-col items-center cursor-pointer" *ngIf="!seccion.producto1.url_imagen">
+                        <iconSvg name="upload" class="!w-[24px] !z-0 !p-0 !m-0 !mr-2 !h-[24px] cursor-pointer">
+                        </iconSvg>
+                        <p>Cargar imagen</p>
+                    </label>
+
+                    <div class="relative w-full flex justify-center">
+                        <img *ngIf="seccion.producto1.url_imagen" [src]="seccion.producto1.url_imagen"
+                            class="h-[400px] object-cover !-m-2" />
+                    </div>
+                </div>
+                <div class="px-3 py-4 flex gap-3 flex-col">
+                    <p class="font-bold">{{ seccion.producto1.nombre }}</p>
+                    <div class="flex gap-2">
+                        <span class="text-neutral-500 line-through">L {{
+                            seccion.producto1.precio | number: '1.2-2' }}</span>
+                        <span class="font-bold">L {{ seccion.producto1.precioOferta | number:
+                            '1.2-2' }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full rounded-2xl flex flex-col border overflow-hidden border-neutral-200">
+                <div
+                    class="cursor-pointer rounded-t-2xl border border-neutral-200 flex items-center justify-center flex-col h-[400px]">
+                    <label class="flex flex-col items-center cursor-pointer" *ngIf="!seccion.producto2.url_imagen">
+                        <iconSvg name="upload" class="!w-[24px] !z-0 !p-0 !m-0 !mr-2 !h-[24px] cursor-pointer">
+                        </iconSvg>
+                        <p>Cargar imagen</p>
+                    </label>
+
+                    <div class="relative w-full flex justify-center">
+                        <img *ngIf="seccion.producto2.url_imagen" [src]="seccion.producto2.url_imagen"
+                            class="h-[400px] object-cover !-m-2" />
+                    </div>
+                </div>
+                <div class="px-3 py-4 flex gap-3 flex-col">
+                    <p class="font-bold">{{ seccion.producto2.nombre }}</p>
+                    <div class="flex gap-2">
+                        <span class="text-neutral-500 line-through">L {{
+                            seccion.producto2.precio | number: '1.2-2' }}</span>
+                        <span class="font-bold">L {{ seccion.producto2.precioOferta | number:
+                            '1.2-2' }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full rounded-2xl flex flex-col border overflow-hidden border-neutral-200">
+                <div
+                    class="cursor-pointer rounded-t-2xl border border-neutral-200 flex items-center justify-center flex-col h-[400px]">
+                    <label class="flex flex-col items-center cursor-pointer" *ngIf="!seccion.producto3.url_imagen">
+                        <iconSvg name="upload" class="!w-[24px] !z-0 !p-0 !m-0 !mr-2 !h-[24px] cursor-pointer">
+                        </iconSvg>
+                        <p>Cargar imagen</p>
+                    </label>
+
+                    <div class="relative w-full flex justify-center">
+                        <img *ngIf="seccion.producto3.url_imagen" [src]="seccion.producto3.url_imagen"
+                            class="h-[400px] object-cover !-m-2" />
+                    </div>
+                </div>
+                <div class="px-3 py-4 flex gap-3 flex-col">
+                    <p class="font-bold">{{ seccion.producto3.nombre }}</p>
+                    <div class="flex gap-2">
+                        <span class="text-neutral-500 line-through">L {{
+                            seccion.producto3.precio | number: '1.2-2' }}</span>
+                        <span class="font-bold">L {{ seccion.producto3.precioOferta | number:
+                            '1.2-2' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full bg-neutral-50 rounded-2xl p-4 text-sm flex flex-col gap-4">
+        <p>Banner promocional</p>
+
+        <div *ngIf="banners.length > 0 && banners[0]?.banner_photo"
+            class="w-full h-[150px] rounded-2xl bg-neutral-100 flex items-center justify-center">
+            <img [src]="banners[0].banner_photo" class="h-[150px] object-cover !-m-2" alt="imagen banner">
+        </div>
+
+        <div *ngIf="banners.length > 0" class="grid grid-cols-2">
+            <div class="flex flex-col gap-6">
+                <article className="gap-0.5 w-full">
+                    <p className="text-neutral-900">Titulo</p>
+                    <p className="text-neutral-900">{{banners[0].titulo}}</p>
+                </article>
+
+                <article className="gap-0.5 w-full">
+                    <p className="text-neutral-900">Sub-título</p>
+                    <p className="text-neutral-900">{{banners[0].subtitulo}}</p>
+                </article>
+
+                <div class="grid grid-cols-2 w-full">
+                    <article className="gap-0.5 w-full">
+                        <p className="text-neutral-900">Botón</p>
+                        <p className="text-neutral-900">{{banners[0].boton}}</p>
+                    </article>
+
+                    <article className="gap-0.5 w-full overflow-hidden pr-2">
+                        <p className="text-neutral-900">Enlace</p>
+                        <span class="text-primary-800">{{banners[0].enlace}}</span>
+                    </article>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <p>Foto del banner</p>
+                <div class="bg-neutral-150 border border-neutral-200 rounded-2xl h-[350px] w-full p-6">
+                    <img src="{{banners[0].photo}}" class="w-full h-full object-contain" alt="vista previa">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="historia" class="w-full bg-neutral-50 rounded-2xl p-4 text-b-sm flex flex-col gap-6">
+        <p>Sección de la historia</p>
+        <div class="flex flex-col gap-4">
+            <article className="gap-0.5 w-full">
+                <p className="text-neutral-900">Titulo</p>
+                <p className="text-neutral-900">{{ historia.titulo }}</p>
+            </article>
+
+            <article className="gap-0.5 w-full">
+                <p className="text-neutral-900">Párrafo</p>
+                <p className="text-neutral-900">{{ historia.parrafo }}</p>
+            </article>
+
+            <div class="grid grid-cols-2 w-full gap-4">
+                <article className="gap-0.5 w-full">
+                    <p className="text-neutral-900">Botón</p>
+                    <p className="text-neutral-900">{{ historia.boton_texto }}</p>
+                </article>
+
+                <article className="gap-0.5 w-full overflow-hidden pr-2">
+                    <p className="text-neutral-900">Enlace</p>
+                    <span class="text-primary-800">{{ historia.url_boton }}</span>
+                </article>
+
+                <article className="gap-0.5 w-full overflow-hidden pr-2">
+                    <p className="text-neutral-900">Video</p>
+                    <span class="text-primary-800">{{ historia.url_media }}</span>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>

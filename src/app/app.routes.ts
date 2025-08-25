@@ -12,9 +12,9 @@ export const routes: Routes = [
     ]
   },
   {
-  path: 'main',
-  loadComponent: () => import('./core/layout/layouts/main/main.component').then(m => m.MainComponent),
-  canMatch: [() => import('./core/auth/auth.guard').then(m => m.authGuard as any)],
+    path: 'main',
+    loadComponent: () => import('./core/layout/layouts/main/main.component').then(m => m.MainComponent),
+    canMatch: [() => import('./core/auth/auth.guard').then(m => m.authGuard as any)],
     children: [
       {
         path: 'dashboard',
@@ -66,7 +66,7 @@ export const routes: Routes = [
       },
       {
         path: 'home/edit',
-        loadComponent: () => import('./modules/personalization/home/home.component').then(m => m.HomeComponent)
+        loadComponent: () => import('./modules/personalization/home/home-edit/home-edit.component').then(m => m.HomeEditComponent)
       },
       {
         path: 'about-us',
@@ -127,6 +127,10 @@ export const routes: Routes = [
     path: 'preview-return-policies',
     loadComponent: () => import('./modules/personalization/return-policies/preview-return-policies/preview-return-policies.component').then(m => m.PreviewReturnPoliciesComponent)
   },
+  // {
+  //   path: 'preview-home',
+  //   loadComponent: () => import('./modules/personalization/home/preview-home/preview-home.component').then(m => m.PreviewHomeComponent)
+  // },
   {
     path: 'dashboard',
     redirectTo: '/main/dashboard'
